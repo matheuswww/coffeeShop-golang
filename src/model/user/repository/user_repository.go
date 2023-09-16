@@ -1,16 +1,21 @@
 package user_repository
 
 import (
+	"database/sql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	user_model "matheuswww/coffeeShop-golang/src/model/user"
 )
 
-func NewUserRepository() UserRepository {
-	return &userRepository{}
+func NewUserRepository(database *sql.DB) UserRepository {
+	return &userRepository{
+		database,
+	}
 }
 
-type userRepository struct {}
+type userRepository struct {
+	databaseConnection *sql.DB
+}
 
 type UserRepository interface {
-	CreateUser(user_model.UserDomainInterface) (user_model.UserDomainInterface,*rest_err.RestErr)
+	SignUp(user_model.UserDomainInterface,[]byte,[]byte) (user_model.UserDomainInterface,*rest_err.RestErr)
 }

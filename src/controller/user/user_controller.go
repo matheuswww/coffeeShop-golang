@@ -17,5 +17,5 @@ type userControllerInterface struct {
 }
 
 type UserControllerInterface interface {
-	CreateUser(c *gin.Context)
+	SignUp(c *gin.Context)
 }

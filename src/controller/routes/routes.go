@@ -7,5 +7,5 @@ import (
 )
 
 func InitRouter(r *gin.RouterGroup,userController user_controller.UserControllerInterface) {
-	r.POST("/crateUser",userController.CreateUser)
+	r.POST("/signUp",userController.SignUp)
 }

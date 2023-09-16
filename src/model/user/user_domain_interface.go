@@ -1,11 +1,12 @@
 package user_model
 
 type UserDomainInterface interface {
-	GetId() string
+	GetId() int64
 	GetEmail() string
 	GetName() string
 	GetPassword() string
-	SetId(string)
+	SetId(int64)
+	EncryptPassword() ([]byte,[]byte,error)
 }
 
 func NewUserDomain(email,name,password string) *userDomain{

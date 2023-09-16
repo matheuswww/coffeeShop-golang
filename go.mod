@@ -12,6 +12,7 @@ require (
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
+	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 )
@@ -32,7 +33,7 @@ require (
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	go.uber.org/zap v1.26.0
 	golang.org/x/arch v0.5.0 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/crypto v0.13.0
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect

@@ -1,7 +1,7 @@
 package user_model
 
 type userDomain struct {
-	id string
+	id int64
 	email string
 	name string
 	password string
@@ -19,10 +19,10 @@ func (ud *userDomain) GetPassword() string {
 	return ud.password
 }
 
-func (ud *userDomain) GetId() string {
+func (ud *userDomain) GetId() int64 {
 	return ud.id
 }
 
-func (ud *userDomain) SetId(id string) {
+func (ud *userDomain) SetId(id int64) {
 	ud.id = id
 }

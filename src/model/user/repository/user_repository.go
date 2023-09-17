@@ -17,5 +17,5 @@ type userRepository struct {
 }
 
 type UserRepository interface {
-	SignUp(user_model.UserDomainInterface,[]byte,[]byte) (user_model.UserDomainInterface,*rest_err.RestErr)
+	SignUp(user_model.UserDomainInterface,[]byte,[]byte) *rest_err.RestErr
 }

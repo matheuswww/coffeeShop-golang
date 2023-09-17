@@ -1,11 +1,11 @@
 package user_model
 
 type UserDomainInterface interface {
-	GetId() int64
+	GetId() string
 	GetEmail() string
 	GetName() string
 	GetPassword() string
-	SetId(int64)
+	SetId(id int) error
 	EncryptPassword() ([]byte,[]byte,error)
 }
 

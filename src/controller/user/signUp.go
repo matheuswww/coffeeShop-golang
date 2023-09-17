@@ -5,10 +5,7 @@ import (
 	"matheuswww/coffeeShop-golang/src/configuration/validation"
 	user_request "matheuswww/coffeeShop-golang/src/controller/model/user/request"
 	user_model "matheuswww/coffeeShop-golang/src/model/user"
-	user_view "matheuswww/coffeeShop-golang/src/view/user"
 	"net/http"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -27,7 +24,7 @@ func (uc *userControllerInterface) SignUp(c *gin.Context) {
 		user_request.Name,
 		user_request.Password,
 	)
-	domainResult,err := uc.service.SignUp(domain)
+	err := uc.service.SignUp(domain)
 	if err != nil {
 		logger.Error(
 			"Error trying to call CreateUser service",
@@ -37,9 +34,6 @@ func (uc *userControllerInterface) SignUp(c *gin.Context) {
 		c.JSON(err.Code,err)
 		return
 	}
-	IdStr := strconv.FormatInt(domain.GetId(),10)
-	logger.Info("User created succesfully",zap.String("userId",IdStr),zap.String("journey","createuser"))
-	c.JSON(http.StatusOK,user_view.ConvertDomainToResponse(
-		domainResult,
-	))
+	logger.Info("User created succesfully",zap.String("userId",domain.GetId()),zap.String("journey","createuser"))
+	c.Status(http.StatusOK)
 }

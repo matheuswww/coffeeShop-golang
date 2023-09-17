@@ -17,5 +17,5 @@ type userDomainService struct {
 }
 
 type UserDomainService interface {
-	SignUp(ud user_model.UserDomainInterface) (user_model.UserDomainInterface,*rest_err.RestErr)
+	SignUp(ud user_model.UserDomainInterface) *rest_err.RestErr
 }

@@ -7,12 +7,11 @@ import (
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	user_model "matheuswww/coffeeShop-golang/src/model/user"
 	"time"
-
 	"go.uber.org/zap"
 )
 
-func (ur userRepository) SignUp(userDomain user_model.UserDomainInterface,hash,salt []byte) (user_model.UserDomainInterface,*rest_err.RestErr){
-	ctx,cancel := context.WithTimeout(context.Background(),10*time.Second)
+func (ur userRepository) SignUp(userDomain user_model.UserDomainInterface,hash,salt []byte) *rest_err.RestErr {
+	ctx,cancel := context.WithTimeout(context.Background(),5 * time.Second)
 	defer cancel()
 	logger.Info("Init createUser repository",zap.String("journey","CreateUser"))
 	db := ur.databaseConnection
@@ -25,30 +24,28 @@ func (ur userRepository) SignUp(userDomain user_model.UserDomainInterface,hash,s
 		} else {
 			logger.Error("Error trying exec query",err,zap.String("journey","createUser"))
 		}
-		return nil,rest_err.NewInternalServerError("database error")
+		return rest_err.NewInternalServerError("database error")
 	}
 	defer rows.Close()
 	if rows.Next() {
 		err = rows.Scan(&existingEmail)
 		if err != nil {
 			logger.Error("Error trying scan query",err,zap.String("journey","createUser"))
-			return nil,rest_err.NewInternalServerError("database error")
+			return rest_err.NewInternalServerError("database error")
 		}
 		logger.Error("Error trying insert user", errors.New("duplicated email"), zap.String("journey", "createUser"))
-		return nil, rest_err.NewConflictError("duplicated email")
+		return rest_err.NewConflictError("duplicated email")
 	}
 	query = "INSERT INTO users (email,name,password,salt) VALUES (?, ?, ?, ?)"
-	result,err := db.ExecContext(ctx,query,userDomain.GetEmail(),userDomain.GetName(),hash,salt)
+	_,err = db.ExecContext(ctx,query,userDomain.GetEmail(),userDomain.GetName(),hash,salt)
 	if err != nil {
 		logger.Error("Error trying insert user",err,zap.String("journey","createUser"))
-		return nil,rest_err.NewInternalServerError("database error")
+		return rest_err.NewInternalServerError("database error")
 	}
-	id,err := result.LastInsertId()
 	if err != nil {
 		logger.Error("Error trying get id",err,zap.String("journey","createUser"))
-		return nil,rest_err.NewInternalServerError("database error")
+		return rest_err.NewInternalServerError("database error")
 	}
-	userDomain.SetId(id)
 	logger.Info("USER INSERTED IN DATABASE")
-	return userDomain,nil
+	return nil
 }

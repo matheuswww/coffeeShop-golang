@@ -1,4 +1,4 @@
-package user_request
+package user_auth_request
 
 type User_request struct {
 	Email string `json:"email" binding:"required,min=10,max=150"`

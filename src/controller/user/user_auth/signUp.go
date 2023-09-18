@@ -3,7 +3,7 @@ package user_auth_controller
 import (
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/validation"
-	user_request "matheuswww/coffeeShop-golang/src/controller/model/user/request"
+	user_auth_request "matheuswww/coffeeShop-golang/src/controller/model/user/user_auth/request"
 	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
 	"net/http"
@@ -15,7 +15,7 @@ import (
 
 func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
 	logger.Info("Init SignUp controller",zap.String("journey","SignUp"))
-	var user_request user_request.User_request
+	var user_request user_auth_request.User_request
 	if err := c.ShouldBindJSON(&user_request);err != nil {
 		logger.Error("Error trying SingUp user",err,zap.String("journey","SignUp"))
 		rest_err := validation.ValidateUserError(err)

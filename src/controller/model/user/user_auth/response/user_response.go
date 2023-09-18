@@ -1,4 +1,4 @@
-package user_response
+package user_auth_response
 
 type User_response struct {
 	Id string `json:"id"`

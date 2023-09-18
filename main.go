@@ -13,7 +13,7 @@ func main() {
 	database := InitDatabase()
 	router := gin.Default()
 	routes.InitRoutes(&router.RouterGroup,database)
-	if err := router.Run(":8080"); err != nil {
+	if err := router.Run(":8081"); err != nil {
 		logger.Error("Error to load router",err)
 		panic("Error to init router")
 	}

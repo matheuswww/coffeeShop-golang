@@ -14,10 +14,10 @@ import (
 )
 
 func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
-	logger.Info("Init SignUp controller",zap.String("journey","SignUp"))
+	logger.Info("Init SignUp controller",zap.String("journey","SignUp Controller"))
 	var user_request user_auth_request.User_request
 	if err := c.ShouldBindJSON(&user_request);err != nil {
-		logger.Error("Error trying SingUp user",err,zap.String("journey","SignUp"))
+		logger.Error("Error trying SingUp user",err,zap.String("journey","SignUp Controller"))
 		rest_err := validation.ValidateUserError(err)
 		c.JSON(rest_err.Code,rest_err)
 		return
@@ -32,12 +32,12 @@ func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
 		logger.Error(
 			"Error trying to call SignUp service",
 			err,
-			zap.String("journey","SignUp"),
+			zap.String("journey","SignUp Controller"),
 		)
 		c.JSON(err.Code,err)
 		return
 	}
 	coockies.SendCookie(c,domain.GetId())
-	logger.Info("User created succesfully",zap.String("userId",strconv.Itoa(domain.GetId())),zap.String("journey","SignUp"))
-	c.Status(http.StatusOK)
+	logger.Info("User created succesfully",zap.String("userId",strconv.Itoa(domain.GetId())),zap.String("journey","SignUp Controller"))
+	c.Status(http.StatusCreated)
 }

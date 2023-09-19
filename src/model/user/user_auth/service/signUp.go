@@ -9,17 +9,17 @@ import (
 )
 
 func (ud *userAuthDomainService) SignUp(userAuthDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr {
-	logger.Info("Init SingUp service",zap.String("journey","SingUp"))
-	hash,salt,encrypt_err := user_auth_util.EncryptPass(userAuthDomain.GetPassword())
+	logger.Info("Init SingUp service",zap.String("journey","SingUp Service"))
+	hash,salt,encrypt_err := user_auth_util.EncryptPassword(userAuthDomain.GetPassword(),nil)
 	if encrypt_err != nil {
-		logger.Error("Error trying encrypt password",encrypt_err,zap.String("journey","SingUp"))
-		return rest_err.NewInternalServerError("database error")
+		logger.Error("Error trying encrypt password",encrypt_err,zap.String("journey","SingUp Service"))
+		return rest_err.NewInternalServerError("server error")
 	}
-	userAuthDomain.SetEncryptPassword(hash)
+	userAuthDomain.SetEncryptedPassword(hash)
 	userAuthDomain.SetSalt(salt)
 	err := ud.userRepositroy.SignUp(userAuthDomain)
 	if err != nil {
-		logger.Error("Error trying create user",err,zap.String("journey","SingUp"))
+		logger.Error("Error trying create user",err,zap.String("journey","SingUp Service"))
 		return err
 	}
 	return nil

@@ -18,7 +18,7 @@ func SendCookie(c *gin.Context,id int) {
 func Store() cookie.Store {
 	store := cookie.NewStore([]byte(os.Getenv("COOCKIEKEY")))
 	store.Options(sessions.Options{
-		Path: "/",
+		Path: "/auth",
 		MaxAge: 60 * 60 * 24,
 		HttpOnly: true,
 		Secure: true,

@@ -18,6 +18,7 @@ func InitUserAuthRoutes(r *gin.RouterGroup,database *sql.DB) {
 	authGroup.Use(sessions.Sessions("auth",coockies.Store()))
 
 	authGroup.POST("/signUp",userController.SignUp)
+	authGroup.POST("/signIn",userController.SignIn)
 }
 
 func initUserAuthController(database *sql.DB) user_auth_controller.UserAuthControllerInterface {

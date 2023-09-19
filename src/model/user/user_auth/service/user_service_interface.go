@@ -18,4 +18,5 @@ type userAuthDomainService struct {
 
 type UserAuthDomainService interface {
 	SignUp(ud user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
+	SignIn(ud user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
 }

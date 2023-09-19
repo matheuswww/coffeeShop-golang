@@ -26,7 +26,7 @@ func (ud *userAuthDomain) GetPassword() string {
 	return ud.password
 }
 
-func (ud *userAuthDomain) GetEncryptPassword() []byte {
+func (ud *userAuthDomain) GetEncryptedPassword() []byte {
 	return ud.encryptedPassword
 }
 
@@ -38,7 +38,7 @@ func (ud *userAuthDomain) SetPassword(password string) {
 	ud.password = password 
 }
 
-func (ud *userAuthDomain) SetEncryptPassword(encryptedPassword []byte) {
+func (ud *userAuthDomain) SetEncryptedPassword(encryptedPassword []byte) {
 	ud.encryptedPassword = encryptedPassword
 }
 

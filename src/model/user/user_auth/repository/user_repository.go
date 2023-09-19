@@ -18,4 +18,5 @@ type userAuthRepository struct {
 
 type UserAuthRepository interface {
 	SignUp(user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
+	SignIn(userDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
 }

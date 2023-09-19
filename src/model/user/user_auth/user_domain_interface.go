@@ -5,11 +5,11 @@ type UserAuthDomainInterface interface {
 	GetEmail() string
 	GetName() string
 	GetPassword() string
-	GetEncryptPassword() []byte
+	GetEncryptedPassword() []byte
 	GetSalt() []byte
 
 	SetPassword(string)
-	SetEncryptPassword([]byte)
+	SetEncryptedPassword([]byte)
 	SetSalt([]byte)
 }
 

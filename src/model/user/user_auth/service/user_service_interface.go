@@ -6,7 +6,7 @@ import (
 	user_auth_repository "matheuswww/coffeeShop-golang/src/model/user/user_auth/repository"
 )
 
-func NewUserAuthDomainService(userAuthRepository user_auth_repository.UserAuthRepository) UserAuthDomainService{
+func NewUserAuthDomainService(userAuthRepository user_auth_repository.UserAuthRepository) UserAuthDomainService {
 	return &userAuthDomainService{
 		userAuthRepository,
 	}
@@ -19,4 +19,6 @@ type userAuthDomainService struct {
 type UserAuthDomainService interface {
 	SignUp(ud user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
 	SignIn(ud user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
+	SendAuthEmail(userDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
+	AuthEmail(userDomain user_auth_model.UserAuthDomainInterface,token string) *rest_err.RestErr	
 }

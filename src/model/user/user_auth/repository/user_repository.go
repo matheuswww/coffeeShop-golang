@@ -19,4 +19,6 @@ type userAuthRepository struct {
 type UserAuthRepository interface {
 	SignUp(user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
 	SignIn(userDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
+	SendAuthEmail(userDomain user_auth_model.UserAuthDomainInterface,token string) *rest_err.RestErr
+	AuthEmail(userDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr
 }

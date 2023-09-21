@@ -19,4 +19,6 @@ type userAuthControllerInterface struct {
 type UserAuthControllerInterface interface {
 	SignUp(c *gin.Context)
 	SignIn(c *gin.Context)
+	SendAuthEmail(c *gin.Context)
+	AuthEmail(c *gin.Context)
 }

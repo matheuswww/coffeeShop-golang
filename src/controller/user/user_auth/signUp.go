@@ -37,7 +37,7 @@ func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
 		c.JSON(err.Code,err)
 		return
 	}
-	coockies.SendCookie(c,domain.GetId())
-	logger.Info("User created succesfully",zap.String("userId",strconv.Itoa(domain.GetId())),zap.String("journey","SignUp Controller"))
+	coockies.SendCoockie(c,domain.GetId(),domain.GetEmail(),domain.GetName())
+	logger.Info("User created succesfully",zap.String("userId",strconv.FormatInt(domain.GetId(),10)),zap.String("journey","SignUp Controller"))
 	c.Status(http.StatusCreated)
 }

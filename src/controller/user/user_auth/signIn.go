@@ -5,8 +5,8 @@ import (
 	"matheuswww/coffeeShop-golang/src/configuration/validation"
 	user_auth_request "matheuswww/coffeeShop-golang/src/controller/model/user/user_auth/request"
 	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
+
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -32,6 +32,6 @@ func (us *userAuthControllerInterface) SignIn(c *gin.Context) {
 		c.JSON(err.Code,err)
 		return
 	}
-	coockies.SendCookie(c,domain.GetId())
-	c.Status(http.StatusOK)
+	coockies.SendCoockie(c,domain.GetId(),domain.GetEmail(),domain.GetName())
+	c.Status(200)
 }

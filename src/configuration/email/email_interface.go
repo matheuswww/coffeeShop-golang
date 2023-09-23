@@ -1,23 +1,28 @@
 package email
 
-import "net/mail"
+import (
+	"net/mail"
+	"time"
+)
 
-func NewEmail(host,name,password string,port int) Email {
-	return &email{
-		host: host,
-		name: name,
-		password: password,
-		port: port,
-	}
+var (
+	limitTime time.Duration
+)
+
+func NewEmail() Email {
+	return &email{}
 }
 
 type Email interface {
-	SendEmail(to []mail.Address, subject, body string) error
+	SendEmail(id int64, to []mail.Address, subject, body string) error
+	conn(to []mail.Address, subject, body string, quit chan error) error
+	configConn() error
+	handler(id int64) (*userHandler, error)
 }
 
 type email struct {
-	host string
-	name string
+	host     string
+	name     string
 	password string
-	port int
+	port     int
 }

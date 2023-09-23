@@ -1,7 +1,7 @@
 package user_auth_response
 
 type User_response struct {
-	Id string `json:"id"`
+	Id    string `json:"id"`
 	Email string `json:"email"`
-	Name string `json:"name"`
+	Name  string `json:"name"`
 }

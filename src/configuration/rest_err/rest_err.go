@@ -3,14 +3,14 @@ package rest_err
 import "net/http"
 
 type RestErr struct {
-	Message string `json:"message"`
-	Err string `json:"error"`
-	Code int `json:"code"`
-	Causes []Causes `json:"causes,omitempty"`
+	Message string   `json:"message"`
+	Err     string   `json:"error"`
+	Code    int      `json:"code"`
+	Causes  []Causes `json:"causes,omitempty"`
 }
 
 type Causes struct {
-	Field string `json:"field"`
+	Field   string `json:"field"`
 	Message string `json:"message"`
 }
 
@@ -18,59 +18,59 @@ func (r *RestErr) Error() string {
 	return r.Message
 }
 
-func NewRestErr(message,err string,code int,causes []Causes) *RestErr {
+func NewRestErr(message, err string, code int, causes []Causes) *RestErr {
 	return &RestErr{
 		Message: message,
-		Err: err,
-		Code: code,
+		Err:     err,
+		Code:    code,
 	}
 }
 
 func NewBadRequestError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Err: "Bad_request",
-		Code: http.StatusBadRequest,
+		Err:     "Bad_request",
+		Code:    http.StatusBadRequest,
 	}
 }
 
-func NewBadRequestValidationError(message string,causes []Causes) *RestErr {
+func NewBadRequestValidationError(message string, causes []Causes) *RestErr {
 	return &RestErr{
 		Message: message,
-		Err: "Bad_request",
-		Code: http.StatusBadRequest,
-		Causes: causes,
+		Err:     "Bad_request",
+		Code:    http.StatusBadRequest,
+		Causes:  causes,
 	}
 }
 
 func NewInternalServerError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Err: "internal server error",
-		Code: http.StatusInternalServerError,
+		Err:     "internal server error",
+		Code:    http.StatusInternalServerError,
 	}
 }
 
 func NewForbbidenError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Err: "Forbidden",
-		Code: http.StatusForbidden,
+		Err:     "Forbidden",
+		Code:    http.StatusForbidden,
 	}
 }
 
 func NewConflictError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Err: "Conflict",
-		Code: http.StatusConflict,
+		Err:     "Conflict",
+		Code:    http.StatusConflict,
 	}
 }
 
 func NewUnauthorizeError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
-		Err: "unauthorized",
-		Code: http.StatusUnauthorized,
+		Err:     "unauthorized",
+		Code:    http.StatusUnauthorized,
 	}
 }

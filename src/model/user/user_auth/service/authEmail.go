@@ -12,20 +12,20 @@ import (
 	"go.uber.org/zap"
 )
 
-func (ud *userAuthDomainService) AuthEmail(userDomain user_auth_model.UserAuthDomainInterface,token string) *rest_err.RestErr {
-	logger.Info("Init AuthEmail repository",zap.String("journey","AuthEmail Repository"))
+func (ud *userAuthDomainService) AuthEmail(userDomain user_auth_model.UserAuthDomainInterface, token string) *rest_err.RestErr {
+	logger.Info("Init AuthEmail repository", zap.String("journey", "AuthEmail Repository"))
 	tokenErr := verifyToken(token)
 	if tokenErr != nil {
-		logger.Error("Error trying AuthEmail",tokenErr,zap.String("journey","AuthEmail Repository"))
+		logger.Error("Error trying AuthEmail", tokenErr, zap.String("journey", "AuthEmail Repository"))
 		if tokenErr.Error() == "expired token" {
 			return rest_err.NewUnauthorizeError("expired token")
 		}
 		return rest_err.NewBadRequestError("invalid token")
 	}
-	logger.Info("Init AuthEmail Service",zap.String("journey","AuthEmail Service"))
+	logger.Info("Init AuthEmail Service", zap.String("journey", "AuthEmail Service"))
 	err := ud.userRepositroy.AuthEmail(userDomain)
 	if err != nil {
-		logger.Error("Error trying AuthEmail Service",err,zap.String("journey","AuthEmail Service"))
+		logger.Error("Error trying AuthEmail Service", err, zap.String("journey", "AuthEmail Service"))
 		return err
 	}
 	return nil
@@ -33,16 +33,16 @@ func (ud *userAuthDomainService) AuthEmail(userDomain user_auth_model.UserAuthDo
 
 func verifyToken(token string) error {
 	secret := os.Getenv("JWTKEY")
-	jwtToken,err := jwt.Parse(token,func(token *jwt.Token)(interface{},error) {
-		if _,ok := token.Method.(*jwt.SigningMethodHMAC);ok {
-			return []byte(secret),nil
+	jwtToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); ok {
+			return []byte(secret), nil
 		}
-		return nil,errors.New("invalid assignature")
+		return nil, errors.New("invalid assignature")
 	})
 	if err != nil {
 		return err
 	}
-	claims,ok := jwtToken.Claims.(jwt.MapClaims)
+	claims, ok := jwtToken.Claims.(jwt.MapClaims)
 	if !ok || !jwtToken.Valid {
 		if exp, ok := claims["exp"].(float64); ok {
 			if int64(exp) < time.Now().Unix() {
@@ -55,4 +55,3 @@ func verifyToken(token string) error {
 	}
 	return nil
 }
-

@@ -11,12 +11,12 @@ import (
 )
 
 func (uc *userAuthControllerInterface) SendAuthEmail(c *gin.Context) {
-	logger.Info("Init SendAuthEmail controller",zap.String("journey","SendAuthEmail Controller"))
-	coockieValues,coockieErr := coockies.GetCookieValues(c)
+	logger.Info("Init SendAuthEmail controller", zap.String("journey", "SendAuthEmail Controller"))
+	coockieValues, coockieErr := coockies.GetCookieValues(c)
 	if coockieErr != nil {
-		logger.Error("Error invalid coockie",coockieErr,zap.String("journey","AuthEmail Controller"))
+		logger.Error("Error invalid coockie", coockieErr, zap.String("journey", "AuthEmail Controller"))
 		restErr := rest_err.NewBadRequestError(coockieErr.Error())
-		c.JSON(restErr.Code,restErr)
+		c.JSON(restErr.Code, restErr)
 		return
 	}
 	userDomain := user_auth_model.NewUserDomainSendAuthEmail(
@@ -26,7 +26,7 @@ func (uc *userAuthControllerInterface) SendAuthEmail(c *gin.Context) {
 	)
 	err := uc.service.SendAuthEmail(userDomain)
 	if err != nil {
-		c.JSON(err.Code,err)
+		c.JSON(err.Code, err)
 		return
 	}
 	c.Status(200)

@@ -8,30 +8,28 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-
 var (
 	log *zap.Logger
-	
-	LOG_OUTPUT = "LOG OUTPUT"
-	LOG_LEVEL = "LOG LEVEL"
-)
 
+	LOG_OUTPUT = "LOG OUTPUT"
+	LOG_LEVEL  = "LOG LEVEL"
+)
 
 func init() {
 	logConfig := zap.Config{
 		OutputPaths: []string{getOutPutLogs()},
-		Level: zap.NewAtomicLevelAt(getLevelLogs()),
-		Encoding: "json",
+		Level:       zap.NewAtomicLevelAt(getLevelLogs()),
+		Encoding:    "json",
 		EncoderConfig: zapcore.EncoderConfig{
-			LevelKey: "level",
-			TimeKey: "time",
-			MessageKey: "message",
-			EncodeTime: zapcore.ISO8601TimeEncoder,
-			EncodeLevel: zapcore.LowercaseLevelEncoder,
+			LevelKey:     "level",
+			TimeKey:      "time",
+			MessageKey:   "message",
+			EncodeTime:   zapcore.ISO8601TimeEncoder,
+			EncodeLevel:  zapcore.LowercaseLevelEncoder,
 			EncodeCaller: zapcore.ShortCallerEncoder,
 		},
 	}
-	log,_ = logConfig.Build()
+	log, _ = logConfig.Build()
 }
 
 func getOutPutLogs() string {
@@ -50,17 +48,18 @@ func getLevelLogs() zapcore.Level {
 		return zapcore.ErrorLevel
 	case "debug":
 		return zapcore.DebugLevel
-	default: return zapcore.InfoLevel 
+	default:
+		return zapcore.InfoLevel
 	}
 }
 
-func Info(message string,tags ...zap.Field) {
-	log.Info(message,tags...)
+func Info(message string, tags ...zap.Field) {
+	log.Info(message, tags...)
 	log.Sync()
 }
 
-func Error(message string,err error,tags ...zap.Field) {
-	tags = append(tags, zap.NamedError("error",err))
-	log.Info(message,tags...)
+func Error(message string, err error, tags ...zap.Field) {
+	tags = append(tags, zap.NamedError("error", err))
+	log.Info(message, tags...)
 	log.Sync()
 }

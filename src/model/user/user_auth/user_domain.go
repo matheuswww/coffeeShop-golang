@@ -1,13 +1,12 @@
 package user_auth_model
 
-
 type userAuthDomain struct {
-	id int64
-	email string
-	name string
-	password string
+	id                int64
+	email             string
+	name              string
+	password          string
 	encryptedPassword []byte
-	salt []byte
+	salt              []byte
 }
 
 func (ud *userAuthDomain) GetId() int64 {
@@ -39,7 +38,7 @@ func (ud *userAuthDomain) SetId(id int64) {
 }
 
 func (ud *userAuthDomain) SetPassword(password string) {
-	ud.password = password 
+	ud.password = password
 }
 
 func (ud *userAuthDomain) SetEncryptedPassword(encryptedPassword []byte) {

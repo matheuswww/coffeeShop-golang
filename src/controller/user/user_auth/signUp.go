@@ -14,12 +14,12 @@ import (
 )
 
 func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
-	logger.Info("Init SignUp controller",zap.String("journey","SignUp Controller"))
+	logger.Info("Init SignUp controller", zap.String("journey", "SignUp Controller"))
 	var user_request user_auth_request.User_request
-	if err := c.ShouldBindJSON(&user_request);err != nil {
-		logger.Error("Error trying SingUp user",err,zap.String("journey","SignUp Controller"))
+	if err := c.ShouldBindJSON(&user_request); err != nil {
+		logger.Error("Error trying SingUp user", err, zap.String("journey", "SignUp Controller"))
 		rest_err := validation.ValidateUserError(err)
-		c.JSON(rest_err.Code,rest_err)
+		c.JSON(rest_err.Code, rest_err)
 		return
 	}
 	domain := user_auth_model.NewUserAuthDomain(
@@ -32,12 +32,12 @@ func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
 		logger.Error(
 			"Error trying to call SignUp service",
 			err,
-			zap.String("journey","SignUp Controller"),
+			zap.String("journey", "SignUp Controller"),
 		)
-		c.JSON(err.Code,err)
+		c.JSON(err.Code, err)
 		return
 	}
-	coockies.SendCoockie(c,domain.GetId(),domain.GetEmail(),domain.GetName())
-	logger.Info("User created succesfully",zap.String("userId",strconv.FormatInt(domain.GetId(),10)),zap.String("journey","SignUp Controller"))
+	coockies.SendCoockie(c, domain.GetId(), domain.GetEmail(), domain.GetName())
+	logger.Info("User created succesfully", zap.String("userId", strconv.FormatInt(domain.GetId(), 10)), zap.String("journey", "SignUp Controller"))
 	c.Status(http.StatusCreated)
 }

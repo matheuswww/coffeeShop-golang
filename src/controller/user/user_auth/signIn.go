@@ -17,7 +17,7 @@ func (us *userAuthControllerInterface) SignIn(c *gin.Context) {
 	var user_request *user_auth_request.User_request_signIn
 	if err := c.ShouldBindJSON(&user_request); err != nil {
 		logger.Error("Error trying signIn user", err, zap.String("journey", "SignIn Controller"))
-		rest_err := validation.ValidateUserError(err)
+		rest_err := validation.ValidateError(err)
 		c.JSON(rest_err.Code, rest_err)
 		return
 	}

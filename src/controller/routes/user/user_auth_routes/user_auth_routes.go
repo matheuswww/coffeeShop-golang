@@ -1,11 +1,10 @@
-package user_routes
+package user_auth_routes
 
 import (
 	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
 	user_auth_controller "matheuswww/coffeeShop-golang/src/controller/user/user_auth"
 	user_auth_repository "matheuswww/coffeeShop-golang/src/model/user/user_auth/repository"
 	user_auth_service "matheuswww/coffeeShop-golang/src/model/user/user_auth/service"
-	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -23,11 +22,8 @@ func InitUserAuthRoutes(r *gin.RouterGroup) {
 }
 
 func initUserAuthController() user_auth_controller.UserAuthControllerInterface {
-	if os.Getenv("MODE") == "DEV" {
-		userAuthRepository := user_auth_repository.NewUserAuthRepository()
-		userAuthService := user_auth_service.NewUserAuthDomainService(userAuthRepository)
-		userAuthController := user_auth_controller.NewUserAuthControllerInterface(userAuthService)
-		return userAuthController
-	}
-	return nil
+	userAuthRepository := user_auth_repository.NewUserAuthRepository()
+	userAuthService := user_auth_service.NewUserAuthDomainService(userAuthRepository)
+	userAuthController := user_auth_controller.NewUserAuthControllerInterface(userAuthService)
+	return userAuthController
 }

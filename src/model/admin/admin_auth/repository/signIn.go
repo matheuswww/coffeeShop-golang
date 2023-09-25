@@ -1,4 +1,4 @@
-package user_auth_repository
+package admin_auth_repository
 
 import (
 	"context"
@@ -6,25 +6,25 @@ import (
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
-	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
+	admin_auth_model "matheuswww/coffeeShop-golang/src/model/admin/admin_auth"
 	"matheuswww/coffeeShop-golang/src/model/util"
 	"time"
 
 	"go.uber.org/zap"
 )
 
-func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr {
-	logger.Info("Init SignIn repository", zap.String("journey", "SignIn Repository"))
+func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDomainInterface) *rest_err.RestErr {
+	logger.Info("Init SignIn Repository", zap.String("journey", "SignIn Repository"))
 	db, err := mysql.NewMysql().NewMysqlConnection()
 	if err != nil {
-		logger.Error("Error trying connect to database", err, zap.String("journey", "SignUp"))
-		return rest_err.NewInternalServerError("database error")
+		logger.Error("Error trying connect database", err, zap.String("journey", "SignIn Repository"))
+		return rest_err.NewInternalServerError("server error")
 	}
 	defer db.Close()
-	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
-	query := "SELECT id,password,salt FROM users WHERE email = ?"
-	result, err := db.QueryContext(ctx, query, userDomain.GetEmail())
+	query := "SELECT id,password,salt FROM admin WHERE email = ? AND password = ?"
+	result, err := db.QueryContext(ctx, query, adminDomain.GetEmail(), adminDomain.GetEncryptedPassword())
 	if err != nil {
 		logger.Error("Error trying SignIn user", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewInternalServerError("database error")
@@ -41,19 +41,19 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 		logger.Error("Error email or password not found", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewUnauthorizeError("Email not registred")
 	}
-	encrypt_err := util.EncryptUserPasswordWithSalt(userDomain.GetPassword(), salt,
+	encrypt_err := util.EncryptUserPasswordWithSalt(adminDomain.GetPassword(), salt,
 		func(hash, salt []byte) {
-			userDomain.SetEncryptedPassword(hash)
-			userDomain.SetSalt(salt)
+			adminDomain.SetEncryptedPassword(hash)
+			adminDomain.SetSalt(salt)
 		})
 	if encrypt_err != nil {
 		logger.Error("Error trying encrypt Password", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewInternalServerError("server error")
 	}
-	if subtle.ConstantTimeCompare(userDomain.GetEncryptedPassword(), encryptedPassword) != 1 {
+	if subtle.ConstantTimeCompare(adminDomain.GetEncryptedPassword(), encryptedPassword) != 1 {
 		logger.Error("Incorrect password or email", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewUnauthorizeError("Incorret password")
 	}
-	userDomain.SetId(id)
+	adminDomain.SetId(id)
 	return nil
 }

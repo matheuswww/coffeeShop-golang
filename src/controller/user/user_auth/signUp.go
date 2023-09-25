@@ -18,7 +18,7 @@ func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
 	var user_request user_auth_request.User_request_signUp
 	if err := c.ShouldBindJSON(&user_request); err != nil {
 		logger.Error("Error trying SingUp user", err, zap.String("journey", "SignUp Controller"))
-		rest_err := validation.ValidateUserError(err)
+		rest_err := validation.ValidateError(err)
 		c.JSON(rest_err.Code, rest_err)
 		return
 	}

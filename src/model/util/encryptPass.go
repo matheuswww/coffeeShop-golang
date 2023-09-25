@@ -1,8 +1,9 @@
-package user_auth_util
+package util
 
 import (
 	"crypto/rand"
 	"crypto/sha256"
+
 	"golang.org/x/crypto/pbkdf2"
 )
 

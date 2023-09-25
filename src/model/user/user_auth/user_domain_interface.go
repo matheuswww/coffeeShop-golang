@@ -14,10 +14,17 @@ type UserAuthDomainInterface interface {
 	SetSalt([]byte)
 }
 
-func NewUserAuthDomain(email, name, password string) *userAuthDomain {
+func NewUserSignUpDomain(email, name, password string) *userAuthDomain {
 	return &userAuthDomain{
 		email:    email,
 		name:     name,
+		password: password,
+	}
+}
+
+func NewUserSignInDomain(email, password string) *userAuthDomain {
+	return &userAuthDomain{
+		email:    email,
 		password: password,
 	}
 }

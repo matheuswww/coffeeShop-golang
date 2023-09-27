@@ -2,6 +2,7 @@ package coockies
 
 import (
 	"errors"
+	"net/http"
 	"os"
 
 	"github.com/gin-contrib/sessions"
@@ -16,7 +17,16 @@ type coockie struct {
 }
 
 func Store() cookie.Store {
-	return cookie.NewStore([]byte(os.Getenv("COOCKIEKEY")))
+	store := cookie.NewStore([]byte(os.Getenv("COOCKIEKEY")))
+	store.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   3600 * 24,
+		HttpOnly: false,
+		Secure:   true,
+		Domain: os.Getenv("DOMAIN"),
+		SameSite: http.SameSiteNoneMode,
+	})
+	return store
 }
 
 func SendCoockie(c *gin.Context, id int64, email string, name string) {

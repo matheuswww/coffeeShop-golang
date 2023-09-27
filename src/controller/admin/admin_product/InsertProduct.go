@@ -19,11 +19,15 @@ import (
 
 func (ac *adminProductController) InsertProduct(c *gin.Context) {
 	logger.Info("Init InsertProduct Controller",zap.String("journey","InsertProduct Controller"))
-	_,coockieErr := coockies.GetCookieValues(c)
+	value,coockieErr := coockies.GetCookieValues(c)
 	if coockieErr != nil {
 		logger.Error("Error invalid coockie", coockieErr, zap.String("journey", "InsertProduct Controller"))
 		restErr := rest_err.NewBadRequestError(coockieErr.Error())
 		c.JSON(restErr.Code, restErr)
+		return
+	}
+	if value.Name != "admin" {
+		c.Status(401)
 		return
 	}
 	var adminProductRequest admin_product_request.AdminProductRequest

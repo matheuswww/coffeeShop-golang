@@ -21,10 +21,10 @@ func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDoma
 		return rest_err.NewInternalServerError("server error")
 	}
 	defer db.Close()
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
-	query := "SELECT id,password,salt FROM admin WHERE email = ? AND password = ?"
-	result, err := db.QueryContext(ctx, query, adminDomain.GetEmail(), adminDomain.GetEncryptedPassword())
+	query := "SELECT id,password,salt FROM users WHERE email = ?"
+	result, err := db.QueryContext(ctx, query, adminDomain.GetEmail())
 	if err != nil {
 		logger.Error("Error trying SignIn user", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewInternalServerError("database error")

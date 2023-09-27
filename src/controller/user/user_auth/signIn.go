@@ -13,7 +13,7 @@ import (
 )
 
 func (us *userAuthControllerInterface) SignIn(c *gin.Context) {
-	logger.Info("Init Signup controller", zap.String("journey", "SignIn Controller"))
+	logger.Info("Init SignIn controller", zap.String("journey", "SignIn Controller"))
 	var user_request *user_auth_request.User_request_signIn
 	if err := c.ShouldBindJSON(&user_request); err != nil {
 		logger.Error("Error trying signIn user", err, zap.String("journey", "SignIn Controller"))

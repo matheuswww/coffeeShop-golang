@@ -1,6 +1,7 @@
 package user_auth_routes
 
 import (
+	"database/sql"
 	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 	user_auth_controller "matheuswww/coffeeShop-golang/src/controller/user/user_auth"
 	user_auth_repository "matheuswww/coffeeShop-golang/src/model/user/user_auth/repository"
@@ -10,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitUserAuthRoutes(r *gin.RouterGroup) {
-	userController := initUserAuthController()
+func InitUserAuthRoutes(r *gin.RouterGroup, database *sql.DB) {
+	userController := initUserAuthController(database)
 	authGroup := r.Group("/auth")
 	authGroup.Use(sessions.Sessions("auth", sessionCookie.Store()))
 
@@ -21,8 +22,8 @@ func InitUserAuthRoutes(r *gin.RouterGroup) {
 	authGroup.GET("/email/:token", userController.AuthEmail)
 }
 
-func initUserAuthController() user_auth_controller.UserAuthControllerInterface {
-	userAuthRepository := user_auth_repository.NewUserAuthRepository()
+func initUserAuthController(database *sql.DB) user_auth_controller.UserAuthControllerInterface {
+	userAuthRepository := user_auth_repository.NewUserAuthRepository(database)
 	userAuthService := user_auth_service.NewUserAuthDomainService(userAuthRepository)
 	userAuthController := user_auth_controller.NewUserAuthControllerInterface(userAuthService)
 	return userAuthController

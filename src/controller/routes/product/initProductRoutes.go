@@ -1,7 +1,11 @@
 package product_routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"database/sql"
 
-func InitAdminRoutes(r *gin.RouterGroup) {
-	initAdminProductRoutes(r)
+	"github.com/gin-gonic/gin"
+)
+
+func InitAdminRoutes(r *gin.RouterGroup, database *sql.DB) {
+	initAdminProductRoutes(r, database)
 }

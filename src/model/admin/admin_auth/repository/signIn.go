@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/subtle"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
-	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	admin_auth_model "matheuswww/coffeeShop-golang/src/model/admin/admin_auth"
 	"matheuswww/coffeeShop-golang/src/model/util"
@@ -15,12 +14,7 @@ import (
 
 func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDomainInterface) *rest_err.RestErr {
 	logger.Info("Init SignIn Repository", zap.String("journey", "SignIn Repository"))
-	db, err := mysql.NewMysql().NewMysqlConnection()
-	if err != nil {
-		logger.Error("Error trying connect database", err, zap.String("journey", "SignIn Repository"))
-		return rest_err.NewInternalServerError("server error")
-	}
-	defer db.Close()
+	db := ar.database
 	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
 	query := "SELECT id,password,salt FROM users WHERE email = ?"

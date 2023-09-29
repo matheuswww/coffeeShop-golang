@@ -2,13 +2,17 @@ package mysql
 
 import "database/sql"
 
-func NewMysql() Mysql {
-	return &mysql{}
+func NewMysql(host, name, password string, port int) Mysql {
+	return &mysql{
+		host:     host,
+		name:     name,
+		password: password,
+		port:     port,
+	}
 }
 
 type Mysql interface {
 	NewMysqlConnection() (*sql.DB, error)
-	configConn() error
 }
 
 type mysql struct {

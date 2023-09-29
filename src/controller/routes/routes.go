@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"database/sql"
 	admin_routes "matheuswww/coffeeShop-golang/src/controller/routes/admin"
 	product_routes "matheuswww/coffeeShop-golang/src/controller/routes/product"
 	user_routes "matheuswww/coffeeShop-golang/src/controller/routes/user"
@@ -8,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoutes(r *gin.RouterGroup) {
-	user_routes.InitUserRoutes(r)
-	admin_routes.InitAdminRoutes(r)
-	product_routes.InitAdminRoutes(r)
+func InitRoutes(r *gin.RouterGroup, database *sql.DB) {
+	user_routes.InitUserRoutes(r, database)
+	admin_routes.InitAdminRoutes(r, database)
+	product_routes.InitAdminRoutes(r, database)
 }

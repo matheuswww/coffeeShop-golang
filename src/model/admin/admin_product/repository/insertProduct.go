@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
-	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	admin_product_model "matheuswww/coffeeShop-golang/src/model/admin/admin_product"
 	"os"
@@ -15,16 +14,11 @@ import (
 
 func (ar *adminProductRepository) InsertProduct(AdminProductDomain admin_product_model.AdminProductDomainInterface) *rest_err.RestErr {
 	logger.Info("Init InsertProduct Repository", zap.String("journey", "InsertProduct Repository"))
-	db, err := mysql.NewMysql().NewMysqlConnection()
-	if err != nil {
-		logger.Error("Error trying connect database", err, zap.String("journey", "SignIn Repository"))
-		return rest_err.NewInternalServerError("server error")
-	}
-	defer db.Close()
+	db := ar.database
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 	query := "INSERT INTO products (uuid, name, price, stock) VALUES (?, ?, ?, ?)"
-	_, err = db.ExecContext(ctx, query, AdminProductDomain.GetUUID(), AdminProductDomain.GetName(), AdminProductDomain.GetPrice(), AdminProductDomain.GetStock())
+	_, err := db.ExecContext(ctx, query, AdminProductDomain.GetUUID(), AdminProductDomain.GetName(), AdminProductDomain.GetPrice(), AdminProductDomain.GetStock())
 	if err != nil {
 		logger.Error("Error trying insert user", err, zap.String("journey", "InsertProduct Repository"))
 		return rest_err.NewInternalServerError("database error")

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
-	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	product_model "matheuswww/coffeeShop-golang/src/model/product"
 	"time"
@@ -14,12 +13,7 @@ import (
 
 func (pr *productRepository) GetAll(products *[]product_model.ProductDomainInterface) *rest_err.RestErr {
 	logger.Info("Init GetAll repository", zap.String("journey", "GetAll Repository"))
-	db, err := mysql.NewMysql().NewMysqlConnection()
-	if err != nil {
-		logger.Error("Error trying connect to database", err, zap.String("journey", "GetAll"))
-		return rest_err.NewInternalServerError("database error")
-	}
-	defer db.Close()
+	db := pr.database
 	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
 	query := "SELECT uuid,name,price,stock FROM products"

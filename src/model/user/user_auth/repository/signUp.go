@@ -3,7 +3,6 @@ package user_auth_repository
 import (
 	"context"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
-	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
 	"time"
@@ -14,15 +13,10 @@ import (
 )
 
 func (ur userAuthRepository) SignUp(userAuthDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr {
-	db, err := mysql.NewMysql().NewMysqlConnection()
-	if err != nil {
-		logger.Error("Error trying connect to database", err, zap.String("journey", "SignUp"))
-		return rest_err.NewInternalServerError("database error")
-	}
-	defer db.Close()
+	logger.Info("Init SignUp repository", zap.String("journey", "SignUp Repository"))
+	db := ur.database
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	logger.Info("Init SignUp repository", zap.String("journey", "SignUp Repository"))
 	query := `
 		INSERT INTO users (email, name, password, salt, authenticated ,registration_date, last_access)
 		VALUES (?, ?, ?, ?, ?, ?, ?)

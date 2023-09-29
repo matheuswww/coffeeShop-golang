@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/subtle"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
-	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
 	"matheuswww/coffeeShop-golang/src/model/util"
@@ -15,12 +14,7 @@ import (
 
 func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainInterface) *rest_err.RestErr {
 	logger.Info("Init SignIn repository", zap.String("journey", "SignIn Repository"))
-	db, err := mysql.NewMysql().NewMysqlConnection()
-	if err != nil {
-		logger.Error("Error trying connect to database", err, zap.String("journey", "SignUp"))
-		return rest_err.NewInternalServerError("database error")
-	}
-	defer db.Close()
+	db := ur.database
 	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
 	query := "SELECT id,password,salt,name FROM users WHERE email = ?"

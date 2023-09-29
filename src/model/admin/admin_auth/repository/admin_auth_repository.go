@@ -1,15 +1,20 @@
 package admin_auth_repository
 
 import (
+	"database/sql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	admin_auth_model "matheuswww/coffeeShop-golang/src/model/admin/admin_auth"
 )
 
-func NewAdminAuthRepository() AdminAuthRepository {
-	return &adminAuthRepository{}
+func NewAdminAuthRepository(database *sql.DB) AdminAuthRepository {
+	return &adminAuthRepository{
+		database,
+	}
 }
 
-type adminAuthRepository struct{}
+type adminAuthRepository struct {
+	database *sql.DB
+}
 
 type AdminAuthRepository interface {
 	SignIn(admin admin_auth_model.AdminAuthDomainInterface) *rest_err.RestErr

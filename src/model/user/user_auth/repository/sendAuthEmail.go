@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"matheuswww/coffeeShop-golang/src/configuration/email"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
-	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
 	"net/mail"
@@ -18,11 +17,7 @@ import (
 
 func (ur *userAuthRepository) SendAuthEmail(userDomain user_auth_model.UserAuthDomainInterface, token string) *rest_err.RestErr {
 	logger.Info("Init SendAuthEmail Repository", zap.String("journey", "SendAuthEmail"))
-	db, err := mysql.NewMysql().NewMysqlConnection()
-	if err != nil {
-		logger.Error("Error trying connect to database", err, zap.String("journey", "SignUp"))
-		return rest_err.NewInternalServerError("database error")
-	}
+	db := ur.database
 	result, err := verifyAuthEmail(db, userDomain.GetId())
 	if err != nil {
 		logger.Error("Error trying verifyAuthEmail", err, zap.String("journey", "SendAuthEmail"))
@@ -35,7 +30,6 @@ func (ur *userAuthRepository) SendAuthEmail(userDomain user_auth_model.UserAuthD
 		logger.Error("Error SendAuthEmail verifyAuthEmail", err, zap.String("journey", "SendAuthEmail"))
 		return rest_err.NewBadRequestError("user already authenticated")
 	}
-	db.Close()
 	to := []mail.Address{
 		{Name: userDomain.GetName(), Address: userDomain.GetEmail()},
 	}

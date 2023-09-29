@@ -23,7 +23,7 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 	defer db.Close()
 	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
-	query := "SELECT id,password,salt FROM users WHERE email = ?"
+	query := "SELECT id,password,salt,name FROM users WHERE email = ?"
 	result, err := db.QueryContext(ctx, query, userDomain.GetEmail())
 	if err != nil {
 		logger.Error("Error trying SignIn user", err, zap.String("journey", "SignIn Repository"))
@@ -32,8 +32,9 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 	defer result.Close()
 	var encryptedPassword, salt []byte
 	var id int64
+	var name string
 	if result.Next() {
-		if err = result.Scan(&id, &encryptedPassword, &salt); err != nil {
+		if err = result.Scan(&id, &encryptedPassword, &salt,&name); err != nil {
 			logger.Error("Error scanning result", err, zap.String("journey", "SignIn Repository"))
 			return rest_err.NewInternalServerError("database error")
 		}
@@ -55,5 +56,6 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 		return rest_err.NewUnauthorizeError("Incorret password")
 	}
 	userDomain.SetId(id)
+	userDomain.SetName(name)
 	return nil
 }

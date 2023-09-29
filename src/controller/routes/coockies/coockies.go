@@ -33,8 +33,8 @@ func SendCoockie(c *gin.Context, id int64, email string, name string) {
 	sessions := sessions.Default(c)
 	coockie := coockie{
 		Id:    id,
-		Name:  name,
 		Email: email,
+		Name:  name,
 	}
 	sessions.Set("id", coockie.Id)
 	sessions.Set("email", coockie.Email)

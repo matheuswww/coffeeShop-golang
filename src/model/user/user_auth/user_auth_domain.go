@@ -48,3 +48,7 @@ func (ud *userAuthDomain) SetEncryptedPassword(encryptedPassword []byte) {
 func (ud *userAuthDomain) SetSalt(salt []byte) {
 	ud.salt = salt
 }
+
+func (ud *userAuthDomain) SetName(name string) {
+	ud.name = name
+}

@@ -12,6 +12,7 @@ type UserAuthDomainInterface interface {
 	SetPassword(string)
 	SetEncryptedPassword([]byte)
 	SetSalt([]byte)
+	SetName(name string)
 }
 
 func NewUserSignUpDomain(email, name, password string) *userAuthDomain {

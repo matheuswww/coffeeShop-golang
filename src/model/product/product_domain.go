@@ -1,9 +1,14 @@
 package product_model
 
 type productDomain struct {
+	id string
 	name  string
 	price float32
-	image []byte
+	quantity int
+}
+
+func (pd *productDomain) GetId() string {
+	return pd.id
 }
 
 func (pd *productDomain) GetName() string {
@@ -14,6 +19,6 @@ func (pd *productDomain) GetPrice() float32 {
 	return pd.price
 }
 
-func (pd *productDomain) GetImage() []byte {
-	return pd.image
+func (pd *productDomain) GetQuantity() int {
+	return pd.quantity
 }

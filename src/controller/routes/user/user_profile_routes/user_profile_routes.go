@@ -16,6 +16,7 @@ func InitUserProfileRoutes(r *gin.RouterGroup) {
 	authGroup.Use(sessions.Sessions("auth", coockies.Store()))
 
 	authGroup.POST("/addToCart", userController.AddToCart)
+	authGroup.GET("/profile", userController.GetProfile)
 }
 
 func initUserProfileController() user_profile_controller.UserProfileController {

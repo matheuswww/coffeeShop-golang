@@ -18,4 +18,5 @@ type userProfileController struct {
 
 type UserProfileController interface {
 	AddToCart(c *gin.Context)
+	GetProfile(c *gin.Context)
 }

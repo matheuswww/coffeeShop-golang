@@ -3,7 +3,7 @@ package user_auth_controller
 import (
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
-	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
+	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +12,7 @@ import (
 
 func (uc *userAuthControllerInterface) SendAuthEmail(c *gin.Context) {
 	logger.Info("Init SendAuthEmail controller", zap.String("journey", "SendAuthEmail Controller"))
-	coockieValues, coockieErr := coockies.GetCookieValues(c)
+	coockieValues, coockieErr := sessionCookie.GetCookieValues(c)
 	if coockieErr != nil {
 		logger.Error("Error invalid coockie", coockieErr, zap.String("journey", "AuthEmail Controller"))
 		restErr := rest_err.NewBadRequestError(coockieErr.Error())

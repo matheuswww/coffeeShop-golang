@@ -36,7 +36,7 @@ func (m *mysql) configConn() error {
 	if mode == "PROD" {
 		return nil
 	} else if mode == "DEV" {
-		m.host = "172.17.0.2"
+		m.host = "172.17.0.3"
 		m.name = "coffeeShop"
 		m.password = "senha"
 		m.port = 8080

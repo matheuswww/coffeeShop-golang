@@ -9,9 +9,8 @@ func NewProductDomainRepository() ProductRepository {
 	return &productRepository{}
 }
 
-type productRepository struct {}
+type productRepository struct{}
 
 type ProductRepository interface {
 	GetAll(*[]product_model.ProductDomainInterface) *rest_err.RestErr
 }
-

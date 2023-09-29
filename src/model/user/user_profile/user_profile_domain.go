@@ -1,9 +1,9 @@
 package user_profile_model
 
 type user_profile_domain struct {
-	id                int64
-	email             string
-	name              string
+	id    int64
+	email string
+	name  string
 }
 
 func (ud *user_profile_domain) GetId() int64 {

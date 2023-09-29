@@ -4,17 +4,17 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"go.uber.org/zap"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/mysql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
 	admin_product_model "matheuswww/coffeeShop-golang/src/model/admin/admin_product"
 	"os"
 	"time"
-	"go.uber.org/zap"
 )
 
-func (ar *adminProductRepository)	InsertProduct(AdminProductDomain admin_product_model.AdminProductDomainInterface) *rest_err.RestErr {
-	logger.Info("Init InsertProduct Repository",zap.String("journey","InsertProduct Repository"))
+func (ar *adminProductRepository) InsertProduct(AdminProductDomain admin_product_model.AdminProductDomainInterface) *rest_err.RestErr {
+	logger.Info("Init InsertProduct Repository", zap.String("journey", "InsertProduct Repository"))
 	db, err := mysql.NewMysql().NewMysqlConnection()
 	if err != nil {
 		logger.Error("Error trying connect database", err, zap.String("journey", "SignIn Repository"))
@@ -24,26 +24,26 @@ func (ar *adminProductRepository)	InsertProduct(AdminProductDomain admin_product
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 	query := "INSERT INTO products (uuid, name, price, stock) VALUES (?, ?, ?, ?)"
-	_,err = db.ExecContext(ctx,query,AdminProductDomain.GetUUID(),AdminProductDomain.GetName(),AdminProductDomain.GetPrice(),AdminProductDomain.GetStock())
+	_, err = db.ExecContext(ctx, query, AdminProductDomain.GetUUID(), AdminProductDomain.GetName(), AdminProductDomain.GetPrice(), AdminProductDomain.GetStock())
 	if err != nil {
-		logger.Error("Error trying insert user",err,zap.String("journey","InsertProduct Repository"))
+		logger.Error("Error trying insert user", err, zap.String("journey", "InsertProduct Repository"))
 		return rest_err.NewInternalServerError("database error")
 	}
 	err = ar.upload(AdminProductDomain)
 	if err != nil {
-		logger.Error("Error trying upload image",err,zap.String("journey","InsertProduct Repository"))
+		logger.Error("Error trying upload image", err, zap.String("journey", "InsertProduct Repository"))
 		return rest_err.NewInternalServerError("the product was inserted,but the image not uploaded")
 	}
 	return nil
 }
 
 func (ar *adminProductRepository) upload(AdminProductDomain admin_product_model.AdminProductDomainInterface) error {
-	root,errRoot := os.Getwd()
+	root, errRoot := os.Getwd()
 	if errRoot != nil {
 		return errRoot
 	}
 	uuidBytes := []byte(AdminProductDomain.GetUUID())
-	dst, err := os.Create(fmt.Sprintf("%s/src/public/img/%s.%s",root,base64.StdEncoding.EncodeToString(uuidBytes),AdminProductDomain.GetImgType()))
+	dst, err := os.Create(fmt.Sprintf("%s/src/public/img/%s.%s", root, base64.StdEncoding.EncodeToString(uuidBytes), AdminProductDomain.GetImgType()))
 	if err != nil {
 		return err
 	}

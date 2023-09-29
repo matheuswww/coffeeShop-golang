@@ -18,7 +18,7 @@ func (ud *userAuthDomainService) AuthEmail(userDomain user_auth_model.UserAuthDo
 	if tokenErr != nil {
 		logger.Error("Error trying AuthEmail", tokenErr, zap.String("journey", "AuthEmail Repository"))
 		if tokenErr.Error() == "expired token" {
-			return rest_err.NewUnauthorizeError("expired token")
+			return rest_err.NewUnauthorizedError("expired token")
 		}
 		return rest_err.NewBadRequestError("invalid token")
 	}

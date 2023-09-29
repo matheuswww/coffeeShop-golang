@@ -2,7 +2,7 @@ package admin_auth_routes
 
 import (
 	admin_auth_controller "matheuswww/coffeeShop-golang/src/controller/admin/admin_auth"
-	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
+	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 	admin_auth_repository "matheuswww/coffeeShop-golang/src/model/admin/admin_auth/repository"
 	admin_auth_service "matheuswww/coffeeShop-golang/src/model/admin/admin_auth/service"
 
@@ -13,7 +13,7 @@ import (
 func InitAdminAuthRoutes(r *gin.RouterGroup) {
 	userController := initAdminAuthController()
 	authGroup := r.Group("/admin/auth")
-	authGroup.Use(sessions.Sessions("auth", coockies.Store()))
+	authGroup.Use(sessions.Sessions("auth", sessionCookie.Store()))
 
 	authGroup.POST("/signIn", userController.SignIn)
 }

@@ -1,12 +1,12 @@
 package admin_product_model
 
 type adminProductDomain struct {
-	uuid string
-	name string
-	price float32
-	img []byte
+	uuid    string
+	name    string
+	price   float32
+	img     []byte
 	imgType string
-	stock int64
+	stock   int64
 }
 
 func (ad *adminProductDomain) GetUUID() string {

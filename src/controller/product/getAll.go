@@ -14,8 +14,8 @@ func (pc *productController) GetAll(c *gin.Context) {
 	var products []product_model.ProductDomainInterface
 	err := pc.service.GetAll(&products)
 	if err != nil {
-		logger.Error("Error trying GetAll product Controller",err,zap.String("journey","GetAll Controller"))
-		c.JSON(err.Code,err)
+		logger.Error("Error trying GetAll product Controller", err, zap.String("journey", "GetAll Controller"))
+		c.JSON(err.Code, err)
 		return
 	}
 	var productJSONList []struct {
@@ -26,17 +26,17 @@ func (pc *productController) GetAll(c *gin.Context) {
 	}
 	for _, productDomain := range products {
 		productJSON := struct {
-				ID    string  `json:"id"`
-				Name  string  `json:"name"`
-				Price float32 `json:"price"`
-				Stock int     `json:"stock"`
+			ID    string  `json:"id"`
+			Name  string  `json:"name"`
+			Price float32 `json:"price"`
+			Stock int     `json:"stock"`
 		}{
-				ID:    productDomain.GetId(),
-				Name:  productDomain.GetName(),
-				Price: productDomain.GetPrice(),
-				Stock: productDomain.GetStock(),
+			ID:    productDomain.GetId(),
+			Name:  productDomain.GetName(),
+			Price: productDomain.GetPrice(),
+			Stock: productDomain.GetStock(),
 		}
 		productJSONList = append(productJSONList, productJSON)
 	}
-	c.JSON(http.StatusOK,productJSONList)
+	c.JSON(http.StatusOK, productJSONList)
 }

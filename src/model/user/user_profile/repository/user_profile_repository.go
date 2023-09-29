@@ -13,5 +13,5 @@ func NewUserProfileRepository() UserProfileRepository {
 type userProfileRepository struct{}
 
 type UserProfileRepository interface {
-	AddToCart(userProfileDomainSevice user_profile_model.UserProfileDomainInterface,productDomain product_model.ProductDomainInterface) *rest_err.RestErr
+	AddToCart(userProfileDomainSevice user_profile_model.UserProfileDomainInterface, productDomain product_model.ProductDomainInterface) *rest_err.RestErr
 }

@@ -67,7 +67,7 @@ func NewConflictError(message string) *RestErr {
 	}
 }
 
-func NewUnauthorizeError(message string) *RestErr {
+func NewUnauthorizedError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
 		Err:     "unauthorized",

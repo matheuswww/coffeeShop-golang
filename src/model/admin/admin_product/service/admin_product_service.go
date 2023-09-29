@@ -6,7 +6,7 @@ import (
 	admin_product_repository "matheuswww/coffeeShop-golang/src/model/admin/admin_product/repository"
 )
 
-func NewAdminProductService(userRepository admin_product_repository.AdminProductRepository) AdminProductDomainService{
+func NewAdminProductService(userRepository admin_product_repository.AdminProductRepository) AdminProductDomainService {
 	return &adminProductDomainService{
 		userRepository,
 	}

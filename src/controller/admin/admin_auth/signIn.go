@@ -4,7 +4,7 @@ import (
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/validation"
 	admin_auth_request "matheuswww/coffeeShop-golang/src/controller/model/admin/admin_auth"
-	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
+	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 	admin_auth_model "matheuswww/coffeeShop-golang/src/model/admin/admin_auth"
 
 	"github.com/gin-gonic/gin"
@@ -30,6 +30,6 @@ func (ac *adminAuthController) SignIn(c *gin.Context) {
 		c.JSON(err.Code, err)
 		return
 	}
-	coockies.SendCoockie(c, domain.GetId(), domain.GetEmail(), "admin")
+	sessionCookie.SendCoockie(c, domain.GetId(), domain.GetEmail(), "admin")
 	c.Status(200)
 }

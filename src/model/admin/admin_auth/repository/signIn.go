@@ -39,7 +39,7 @@ func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDoma
 		}
 	} else {
 		logger.Error("Error email or password not found", err, zap.String("journey", "SignIn Repository"))
-		return rest_err.NewUnauthorizeError("Email not registred")
+		return rest_err.NewUnauthorizedError("Email not registred")
 	}
 	encrypt_err := util.EncryptUserPasswordWithSalt(adminDomain.GetPassword(), salt,
 		func(hash, salt []byte) {
@@ -52,7 +52,7 @@ func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDoma
 	}
 	if subtle.ConstantTimeCompare(adminDomain.GetEncryptedPassword(), encryptedPassword) != 1 {
 		logger.Error("Incorrect password or email", err, zap.String("journey", "SignIn Repository"))
-		return rest_err.NewUnauthorizeError("Incorret password")
+		return rest_err.NewUnauthorizedError("Incorret password")
 	}
 	adminDomain.SetId(id)
 	return nil

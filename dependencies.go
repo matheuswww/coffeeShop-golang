@@ -24,10 +24,10 @@ func loadEnv() {
 
 func loadCors() *cors.Config {
 	config := cors.DefaultConfig()
-	if mode == "DEV"{
+	if mode == "DEV" {
 		config.AllowOrigins = []string{os.Getenv("CORSORIGIN")}
 		config.AllowMethods = []string{"POST", "GET"}
-		config.AllowHeaders = []string{"Origin", "X-Requested-With", "Content-Type", "Accept","Cookie"}
+		config.AllowHeaders = []string{"Origin", "X-Requested-With", "Content-Type", "Accept", "Cookie"}
 		config.ExposeHeaders = []string{"Content-Length"}
 		config.AllowCredentials = true
 		return &config

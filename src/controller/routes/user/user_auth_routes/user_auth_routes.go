@@ -1,7 +1,7 @@
 package user_auth_routes
 
 import (
-	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
+	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 	user_auth_controller "matheuswww/coffeeShop-golang/src/controller/user/user_auth"
 	user_auth_repository "matheuswww/coffeeShop-golang/src/model/user/user_auth/repository"
 	user_auth_service "matheuswww/coffeeShop-golang/src/model/user/user_auth/service"
@@ -13,7 +13,7 @@ import (
 func InitUserAuthRoutes(r *gin.RouterGroup) {
 	userController := initUserAuthController()
 	authGroup := r.Group("/auth")
-	authGroup.Use(sessions.Sessions("auth", coockies.Store()))
+	authGroup.Use(sessions.Sessions("auth", sessionCookie.Store()))
 
 	authGroup.POST("/signUp", userController.SignUp)
 	authGroup.POST("/signIn", userController.SignIn)

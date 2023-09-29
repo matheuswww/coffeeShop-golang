@@ -6,11 +6,10 @@ type UserProfileDomainInterface interface {
 	GetName() string
 }
 
-func NewUserProfileDomain(id int64,email,name string) UserProfileDomainInterface {
-	return &user_profile_domain {
+func NewUserProfileDomain(id int64, email, name string) UserProfileDomainInterface {
+	return &user_profile_domain{
 		id,
 		email,
 		name,
 	}
 }
-

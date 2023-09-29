@@ -4,7 +4,7 @@ import (
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/validation"
 	user_auth_request "matheuswww/coffeeShop-golang/src/controller/model/user/user_auth/request"
-	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
+	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
 
@@ -31,6 +31,6 @@ func (us *userAuthControllerInterface) SignIn(c *gin.Context) {
 		c.JSON(err.Code, err)
 		return
 	}
-	coockies.SendCoockie(c, domain.GetId(), domain.GetEmail(), domain.GetName())
+	sessionCookie.SendCoockie(c, domain.GetId(), domain.GetEmail(), domain.GetName())
 	c.Status(200)
 }

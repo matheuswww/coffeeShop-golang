@@ -7,7 +7,6 @@ import (
 	user_profile_repository "matheuswww/coffeeShop-golang/src/model/user/user_profile/repository"
 )
 
-
 func NewUserProfileService(repository user_profile_repository.UserProfileRepository) UserProfileDomainService {
 	return &userProfileDomainService{
 		repository,
@@ -19,5 +18,5 @@ type userProfileDomainService struct {
 }
 
 type UserProfileDomainService interface {
-	AddToCart(userProfileDomainService user_profile_model.UserProfileDomainInterface,productDomain product_model.ProductDomainInterface) *rest_err.RestErr
+	AddToCart(userProfileDomainService user_profile_model.UserProfileDomainInterface, productDomain product_model.ProductDomainInterface) *rest_err.RestErr
 }

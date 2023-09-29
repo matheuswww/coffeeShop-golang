@@ -12,7 +12,7 @@ func (pd *productDomainService) GetAll(products *[]product_model.ProductDomainIn
 	logger.Info("Init GetAll service", zap.String("journey", "GetAll Service"))
 	err := pd.repository.GetAll(products)
 	if err != nil {
-		logger.Error("Error trying GetAll products",err,zap.String("journey","GetAll Product"))
+		logger.Error("Error trying GetAll products", err, zap.String("journey", "GetAll Product"))
 		return err
 	}
 	return nil

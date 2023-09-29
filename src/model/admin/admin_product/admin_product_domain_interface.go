@@ -11,12 +11,12 @@ type AdminProductDomainInterface interface {
 	SetImgType(imgType string)
 }
 
-func NewAdminProductModel(name string,price float32,img []byte,imgType string,stock int64) *adminProductDomain {
+func NewAdminProductModel(name string, price float32, img []byte, imgType string, stock int64) *adminProductDomain {
 	return &adminProductDomain{
-		name: name,
-		price: price,
-		img: img,
+		name:    name,
+		price:   price,
+		img:     img,
 		imgType: imgType,
-		stock: stock,
-	}	
+		stock:   stock,
+	}
 }

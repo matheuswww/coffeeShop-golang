@@ -23,30 +23,30 @@ func (pr *productRepository) GetAll(products *[]product_model.ProductDomainInter
 	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
 	query := "SELECT uuid,name,price,stock FROM products"
-	result,err := db.QueryContext(ctx,query)
+	result, err := db.QueryContext(ctx, query)
 	if err != nil {
-		logger.Error("Error trying GetAll products",err,zap.String("journey","GetAll repository"))
+		logger.Error("Error trying GetAll products", err, zap.String("journey", "GetAll repository"))
 		return rest_err.NewInternalServerError("server error")
 	}
 	defer result.Close()
 	for result.Next() {
-		var id,name string
+		var id, name string
 		var price float32
-		var stock int 
+		var stock int
 		if result.Next() {
-			if err := result.Scan(&id,&name,&price,&stock);err != nil {
-				logger.Error("Error scanning result",err,zap.String("journey","GetAll Repository"))
+			if err := result.Scan(&id, &name, &price, &stock); err != nil {
+				logger.Error("Error scanning result", err, zap.String("journey", "GetAll Repository"))
 				return rest_err.NewInternalServerError("server error")
 			}
 			product := product_model.NewProductDomainService(
-				id,name,price,stock,
+				id, name, price, stock,
 			)
-			*products = append(*products,product)
+			*products = append(*products, product)
 		}
 	}
 	if len(*products) == 0 {
-		logger.Error("Error no products found",errors.New("no products found"),zap.String("journey", "GetAll Repository"))
-    return rest_err.NewNotFoundError("no products")
+		logger.Error("Error no products found", errors.New("no products found"), zap.String("journey", "GetAll Repository"))
+		return rest_err.NewNotFoundError("no products")
 	}
 	return nil
 }

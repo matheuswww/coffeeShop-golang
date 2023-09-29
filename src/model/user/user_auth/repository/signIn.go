@@ -34,13 +34,13 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 	var id int64
 	var name string
 	if result.Next() {
-		if err = result.Scan(&id, &encryptedPassword, &salt,&name); err != nil {
+		if err = result.Scan(&id, &encryptedPassword, &salt, &name); err != nil {
 			logger.Error("Error scanning result", err, zap.String("journey", "SignIn Repository"))
 			return rest_err.NewInternalServerError("database error")
 		}
 	} else {
 		logger.Error("Error email or password not found", err, zap.String("journey", "SignIn Repository"))
-		return rest_err.NewUnauthorizeError("Email not registred")
+		return rest_err.NewUnauthorizedError("Email not registred")
 	}
 	encrypt_err := util.EncryptUserPasswordWithSalt(userDomain.GetPassword(), salt,
 		func(hash, salt []byte) {
@@ -53,7 +53,7 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 	}
 	if subtle.ConstantTimeCompare(userDomain.GetEncryptedPassword(), encryptedPassword) != 1 {
 		logger.Error("Incorrect password or email", err, zap.String("journey", "SignIn Repository"))
-		return rest_err.NewUnauthorizeError("Incorret password")
+		return rest_err.NewUnauthorizedError("Incorret password")
 	}
 	userDomain.SetId(id)
 	userDomain.SetName(name)

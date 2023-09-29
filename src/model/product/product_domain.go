@@ -1,7 +1,7 @@
 package product_model
 
 type productDomain struct {
-	id string
+	id    string
 	name  string
 	price float32
 	stock int
@@ -37,4 +37,4 @@ func (pd *productDomain) SetPrice(price float32) {
 
 func (pd *productDomain) SetStock(stock int) {
 	pd.stock = stock
-} 
+}

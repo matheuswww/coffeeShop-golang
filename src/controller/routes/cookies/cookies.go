@@ -1,4 +1,4 @@
-package coockies
+package sessionCookie
 
 import (
 	"errors"
@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type coockie struct {
+type sessionCookie struct {
 	Id    int64
 	Email string
 	Name  string
@@ -23,7 +23,7 @@ func Store() cookie.Store {
 		MaxAge:   3600 * 24,
 		HttpOnly: false,
 		Secure:   true,
-		Domain: os.Getenv("DOMAIN"),
+		Domain:   os.Getenv("DOMAIN"),
 		SameSite: http.SameSiteNoneMode,
 	})
 	return store
@@ -31,28 +31,28 @@ func Store() cookie.Store {
 
 func SendCoockie(c *gin.Context, id int64, email string, name string) {
 	sessions := sessions.Default(c)
-	coockie := coockie{
+	sessionCookie := sessionCookie{
 		Id:    id,
 		Email: email,
 		Name:  name,
 	}
-	sessions.Set("id", coockie.Id)
-	sessions.Set("email", coockie.Email)
-	sessions.Set("name", coockie.Name)
+	sessions.Set("id", sessionCookie.Id)
+	sessions.Set("email", sessionCookie.Email)
+	sessions.Set("name", sessionCookie.Name)
 	sessions.Save()
 }
 
-func GetCookieValues(c *gin.Context) (coockie, error) {
+func GetCookieValues(c *gin.Context) (sessionCookie, error) {
 	sessions := sessions.Default(c)
 	id := sessions.Get("id")
 	email := sessions.Get("email")
 	name := sessions.Get("name")
 	if id != nil && email != nil && name != nil {
-		return coockie{
+		return sessionCookie{
 			Id:    id.(int64),
 			Email: email.(string),
 			Name:  name.(string),
 		}, nil
 	}
-	return coockie{}, errors.New("invalid coockie")
+	return sessionCookie{}, errors.New("invalid sessionCookie")
 }

@@ -12,7 +12,7 @@ func initAdminProductRoutes(r *gin.RouterGroup) {
 	productController := initProductController()
 	authGroup := r.Group("/product")
 
-	authGroup.GET("/getAll",productController.GetAll)
+	authGroup.GET("/getAll", productController.GetAll)
 }
 
 func initProductController() product_controller.ProductController {

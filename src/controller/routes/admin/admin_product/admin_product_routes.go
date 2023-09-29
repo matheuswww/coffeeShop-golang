@@ -2,7 +2,7 @@ package admin_product_routes
 
 import (
 	admin_product_controller "matheuswww/coffeeShop-golang/src/controller/admin/admin_product"
-	"matheuswww/coffeeShop-golang/src/controller/routes/coockies"
+	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 	admin_product_repository "matheuswww/coffeeShop-golang/src/model/admin/admin_product/repository"
 	admin_product_service "matheuswww/coffeeShop-golang/src/model/admin/admin_product/service"
 
@@ -13,9 +13,9 @@ import (
 func InitAdminProductRoutes(r *gin.RouterGroup) {
 	userController := initAdminProductController()
 	authGroup := r.Group("/admin/product")
-	authGroup.Use(sessions.Sessions("auth", coockies.Store()))
+	authGroup.Use(sessions.Sessions("auth", sessionCookie.Store()))
 
-	authGroup.POST("/insert",userController.InsertProduct)
+	authGroup.POST("/insert", userController.InsertProduct)
 }
 
 func initAdminProductController() admin_product_controller.AdminProductController {

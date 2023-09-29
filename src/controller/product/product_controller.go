@@ -12,7 +12,7 @@ func NewProductController(service product_service.ProductDomainRepository) Produ
 	}
 }
 
-type productController struct{
+type productController struct {
 	service product_service.ProductDomainRepository
 }
 

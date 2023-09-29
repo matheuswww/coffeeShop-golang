@@ -30,7 +30,7 @@ func (ur userProfileRepository) AddToCart(userProfileDomainSevice user_profile_m
 	}
 	uuidString := uuid.String()
 	query := "INSERT INTO cart (cart_id,user_id,product_id,product_name,quantity,price) VALUES(?, ?, ?, ?, ?, ?)"
-	_,err = db.ExecContext(ctx,query,uuidString,userProfileDomainSevice.GetId(),productDomain.GetId(),productDomain.GetName(),productDomain.GetQuantity(),productDomain.GetPrice())
+	_,err = db.ExecContext(ctx,query,uuidString,userProfileDomainSevice.GetId(),productDomain.GetId(),productDomain.GetName(),productDomain.GetStock(),productDomain.GetPrice())
 	if err != nil {
 		logger.Error("Error trying insert cart", err, zap.String("journey", "AddToCart Repository"))
 		return rest_err.NewInternalServerError("server error")

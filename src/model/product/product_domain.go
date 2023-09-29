@@ -4,7 +4,7 @@ type productDomain struct {
 	id string
 	name  string
 	price float32
-	quantity int
+	stock int
 }
 
 func (pd *productDomain) GetId() string {
@@ -19,6 +19,22 @@ func (pd *productDomain) GetPrice() float32 {
 	return pd.price
 }
 
-func (pd *productDomain) GetQuantity() int {
-	return pd.quantity
+func (pd *productDomain) GetStock() int {
+	return pd.stock
 }
+
+func (pd *productDomain) SetId(id string) {
+	pd.id = id
+}
+
+func (pd *productDomain) SetName(name string) {
+	pd.name = name
+}
+
+func (pd *productDomain) SetPrice(price float32) {
+	pd.price = price
+}
+
+func (pd *productDomain) SetStock(stock int) {
+	pd.stock = stock
+} 

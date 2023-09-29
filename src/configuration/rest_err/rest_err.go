@@ -74,3 +74,11 @@ func NewUnauthorizeError(message string) *RestErr {
 		Code:    http.StatusUnauthorized,
 	}
 }
+
+func NewNotFoundError(message string) *RestErr {
+	return &RestErr{
+		Message: message,
+		Err:     "not found",
+		Code:    http.StatusNotFound,
+	}
+}

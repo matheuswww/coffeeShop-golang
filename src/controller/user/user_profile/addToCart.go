@@ -36,7 +36,7 @@ func (uc *userProfileController) AddToCart(c *gin.Context) {
 		cookie.Name,
 	)
 	fmt.Println(userProfileRequest.ProductId)
-	productDomain := product_model.NewProductDomain(
+	productDomain := product_model.NewProductDomainService(
 		userProfileRequest.ProductId,
 		userProfileRequest.ProductName,
 		userProfileRequest.ProductPrice,

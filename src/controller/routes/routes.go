@@ -12,5 +12,5 @@ import (
 func InitRoutes(r *gin.RouterGroup, database *sql.DB) {
 	user_routes.InitUserRoutes(r, database)
 	admin_routes.InitAdminRoutes(r, database)
-	product_routes.InitAdminRoutes(r, database)
+	product_routes.InitProductRoutes(r, database)
 }

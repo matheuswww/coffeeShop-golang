@@ -7,18 +7,19 @@ import (
 	product_service "matheuswww/coffeeShop-golang/src/model/product/service"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
-func initAdminProductRoutes(r *gin.RouterGroup, database *sql.DB) {
-	productController := initProductController(database)
+func initProductRoutes(r *gin.RouterGroup, database *sql.DB,redis *redis.Client) {
+	productController := initProductController(database,redis)
 	authGroup := r.Group("/product")
 
 	authGroup.GET("/getAll", productController.GetAll)
 }
 
-func initProductController(database *sql.DB) product_controller.ProductController {
-	productRepository := product_repository.NewProductDomainRepository(database)
+func initProductController(database *sql.DB,redis *redis.Client) product_controller.ProductController {
+	productRepository := product_repository.NewProductDomainRepository(database,redis)
 	productService := product_service.NewProductService(productRepository)
-	productController := product_controller.NewProductController(productService)
+	productController := product_controller.NewProductController(productService,redis)
 	return productController
 }

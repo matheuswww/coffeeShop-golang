@@ -13,7 +13,7 @@ func main() {
 	loadEnv()
 	router := gin.Default()
 	corsConfig := loadCors()
-	db := loadDatabase()
+	db := loadMysql()
 	router.Use(cors.New(*corsConfig))
 	routes.InitRoutes(&router.RouterGroup, db)
 	if err := router.Run(":8080"); err != nil {

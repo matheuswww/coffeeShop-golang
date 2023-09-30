@@ -1,9 +1,12 @@
 package product_repository
 
 import (
+	"context"
 	"database/sql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
-	product_model "matheuswww/coffeeShop-golang/src/model/product"
+	user_profile_response "matheuswww/coffeeShop-golang/src/controller/model/user/user_profile/response"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func NewProductDomainRepository(database *sql.DB) ProductRepository {
@@ -17,5 +20,5 @@ type productRepository struct {
 }
 
 type ProductRepository interface {
-	GetAll(*[]product_model.ProductDomainInterface) *rest_err.RestErr
+	GetAll(rdb *redis.Client,ctxRedis *context.Context) ([]user_profile_response.Product,*rest_err.RestErr)
 }

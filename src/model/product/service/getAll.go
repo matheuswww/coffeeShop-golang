@@ -1,19 +1,21 @@
 package product_service
 
 import (
+	"context"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
-	product_model "matheuswww/coffeeShop-golang/src/model/product"
+	user_profile_response "matheuswww/coffeeShop-golang/src/controller/model/user/user_profile/response"
 
+	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 )
 
-func (pd *productDomainService) GetAll(products *[]product_model.ProductDomainInterface) *rest_err.RestErr {
+func (pd *productDomainService) GetAll(rdb *redis.Client,ctxRedis *context.Context) ([]user_profile_response.Product,*rest_err.RestErr) {
 	logger.Info("Init GetAll service", zap.String("journey", "GetAll Service"))
-	err := pd.repository.GetAll(products)
+	products,err := pd.repository.GetAll(rdb,ctxRedis)
 	if err != nil {
 		logger.Error("Error trying GetAll products", err, zap.String("journey", "GetAll Product"))
-		return err
+		return nil,err
 	}
-	return nil
+	return products,nil
 }

@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS products (
+  uuid VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  stock INT NOT NULL
+);

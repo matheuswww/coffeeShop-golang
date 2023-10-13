@@ -1,0 +1,44 @@
+version: "1"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: senha
+      MYSQL_DATABASE: coffeeShop
+      MYSQL_PASSWORD: senha
+    ports:
+      - "3306:3306"
+    volumes:
+      - /var/lib/docker/volumes/mysql_dev:/var/lib/mysql_dev
+    restart: always
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://mysql:3306"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+  redis:
+    image: redis:7.2
+    container_name: redis
+    restart: always
+    environment:
+      REDIS_PASSWORD: senha
+    ports:
+      - "6379:6379"
+    healthcheck:
+        test: "[ $(redis-cli -a $REDIS_PASSWORD ping) = 'PONG' ]"
+        interval: 30s
+        timeout: 10s
+        retries: 3
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    healthcheck:
+        test: ["CMD", "nc", "-z", "localhost", "1025"]
+        interval: 30s
+        timeout: 10s
+        retries: 3

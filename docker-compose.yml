@@ -1,0 +1,89 @@
+version: "1"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: senha
+      MYSQL_DATABASE: coffeeShop
+      MYSQL_PASSWORD: senha
+    volumes:
+      - /var/lib/docker/volumes/mysql:/var/lib/mysql
+    restart: always
+    networks:
+      - network
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://mysql:3306"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+  redis:
+    image: redis:7.2
+    container_name: redis
+    restart: always
+    environment:
+      REDIS_PASSWORD: senha
+    networks:
+      - network
+    healthcheck:
+        test: "[ $(redis-cli -a $REDIS_PASSWORD ping) = 'PONG' ]"
+        interval: 30s
+        timeout: 10s
+        retries: 3
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    restart: always
+    ports:
+      - "8025:8025"
+    networks:
+      - network
+    healthcheck:
+        test: ["CMD", "nc", "-z", "localhost", "1025"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+  goapp:
+    image: goapp
+    container_name: goapp
+    restart: always
+    networks:
+      - network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailhog:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider http://goapp:8080 || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 3
+  nextjsapp:
+    image: nextjsapp
+    container_name: nextjsapp
+    networks:
+      - network
+    depends_on:
+      goapp:
+        condition: service_healthy
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider http://nextjsapp:3000 || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 3
+  nginx:
+    image: nginxapp
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+    networks:
+      - network
+    depends_on:
+      nextjsapp:
+        condition: service_healthy
+networks:
+  network:

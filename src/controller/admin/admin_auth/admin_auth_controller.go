@@ -14,6 +14,7 @@ func NewAdminAuthInterface(AdminAuthService admin_auth_service.AdminAuthDomainSe
 
 type AdminAuthControllerInterface interface {
 	SignIn(c *gin.Context)
+	SignUp(c *gin.Context)
 }
 
 type adminAuthController struct {

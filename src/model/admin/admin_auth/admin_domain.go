@@ -1,14 +1,14 @@
 package admin_auth_model
 
 type adminAuthDomain struct {
-	id                int64
+	id                int
 	email             string
 	password          string
 	encryptedPassword []byte
 	salt              []byte
 }
 
-func (ad *adminAuthDomain) GetId() int64 {
+func (ad *adminAuthDomain) GetId() int{
 	return ad.id
 }
 
@@ -28,7 +28,7 @@ func (ad *adminAuthDomain) GetEncryptedPassword() []byte {
 	return ad.encryptedPassword
 }
 
-func (ad *adminAuthDomain) SetId(id int64) {
+func (ad *adminAuthDomain) SetId(id int) {
 	ad.id = id
 }
 

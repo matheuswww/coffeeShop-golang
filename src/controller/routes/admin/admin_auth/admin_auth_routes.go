@@ -17,6 +17,7 @@ func InitAdminAuthRoutes(r *gin.RouterGroup, database *sql.DB) {
 	authGroup.Use(sessions.Sessions("auth", sessionCookie.Store()))
 
 	authGroup.POST("/signIn", userController.SignIn)
+	authGroup.POST("/signUp", userController.SignUp)
 }
 
 func initAdminAuthController(database *sql.DB) admin_auth_controller.AdminAuthControllerInterface {

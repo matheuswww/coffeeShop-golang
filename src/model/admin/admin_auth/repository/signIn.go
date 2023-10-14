@@ -17,7 +17,7 @@ func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDoma
 	db := ar.database
 	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
-	query := "SELECT id,password,salt FROM users WHERE email = ?"
+	query := "SELECT id,password,salt FROM admin WHERE email = ?"
 	result, err := db.QueryContext(ctx, query, adminDomain.GetEmail())
 	if err != nil {
 		logger.Error("Error trying SignIn user", err, zap.String("journey", "SignIn Repository"))
@@ -25,21 +25,22 @@ func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDoma
 	}
 	defer result.Close()
 	var encryptedPassword, salt []byte
-	var id int64
+	var id int
 	if result.Next() {
 		if err = result.Scan(&id, &encryptedPassword, &salt); err != nil {
 			logger.Error("Error scanning result", err, zap.String("journey", "SignIn Repository"))
 			return rest_err.NewInternalServerError("database error")
 		}
 	} else {
-		logger.Error("Error email or password not found", err, zap.String("journey", "SignIn Repository"))
+		logger.Error("Error email not found", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewUnauthorizedError("Email not registred")
 	}
-	encrypt_err := util.EncryptUserPasswordWithSalt(adminDomain.GetPassword(), salt,
-		func(hash, salt []byte) {
-			adminDomain.SetEncryptedPassword(hash)
-			adminDomain.SetSalt(salt)
-		})
+	hash, salt, encrypt_err := util.EncryptPassword(adminDomain.GetPassword(), salt)
+	if err != nil {
+		return rest_err.NewInternalServerError("database error")
+	}
+	adminDomain.SetEncryptedPassword(hash)
+	adminDomain.SetSalt(salt)
 	if encrypt_err != nil {
 		logger.Error("Error trying encrypt Password", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewInternalServerError("server error")

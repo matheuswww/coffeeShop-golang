@@ -14,6 +14,7 @@ func main() {
 	router := gin.Default()
 	corsConfig := loadCors()
 	db := loadMysql()
+	router.GET("/",func(c *gin.Context){c.Status(200)})
 	router.Use(cors.New(*corsConfig))
 	routes.InitRoutes(&router.RouterGroup, db)
 	if err := router.Run(":8080"); err != nil {

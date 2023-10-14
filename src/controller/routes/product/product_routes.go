@@ -18,7 +18,7 @@ func initProductRoutes(r *gin.RouterGroup, database *sql.DB,redis *redis.Client)
 }
 
 func initProductController(database *sql.DB,redis *redis.Client) product_controller.ProductController {
-	productRepository := product_repository.NewProductDomainRepository(database,redis)
+	productRepository := product_repository.NewProductDomainRepository(database)
 	productService := product_service.NewProductService(productRepository)
 	productController := product_controller.NewProductController(productService,redis)
 	return productController

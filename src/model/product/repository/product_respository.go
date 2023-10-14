@@ -9,7 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func NewProductDomainRepository(database *sql.DB,redis *redis.Client) ProductRepository {
+func NewProductDomainRepository(database *sql.DB) ProductRepository {
 	return &productRepository{
 		database,
 	}

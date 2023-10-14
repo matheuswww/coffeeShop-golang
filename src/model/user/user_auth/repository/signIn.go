@@ -36,11 +36,12 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 		logger.Error("Error email or password not found", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewUnauthorizedError("Email not registred")
 	}
-	encrypt_err := util.EncryptUserPasswordWithSalt(userDomain.GetPassword(), salt,
-		func(hash, salt []byte) {
-			userDomain.SetEncryptedPassword(hash)
-			userDomain.SetSalt(salt)
-		})
+	hash, salt, encrypt_err := util.EncryptPassword(userDomain.GetPassword(), salt)
+	if err != nil {
+		return rest_err.NewInternalServerError("database error")
+	}
+	userDomain.SetEncryptedPassword(hash)
+	userDomain.SetSalt(salt)
 	if encrypt_err != nil {
 		logger.Error("Error trying encrypt Password", err, zap.String("journey", "SignIn Repository"))
 		return rest_err.NewInternalServerError("server error")

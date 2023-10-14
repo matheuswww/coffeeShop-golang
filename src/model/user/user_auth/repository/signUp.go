@@ -18,12 +18,10 @@ func (ur userAuthRepository) SignUp(userAuthDomain user_auth_model.UserAuthDomai
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	query := `
-		INSERT INTO users (email, name, password, salt, authenticated ,registration_date, last_access)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO users (email, name, password, salt, authenticated)
+		VALUES (?, ?, ?, ?, ?)
 	`
-	location := time.FixedZone("BRT", -3*60*60)
-	timeStamp := time.Now().In(location).Format("2006-01-02 15:04:05")
-	result, err := db.ExecContext(ctx, query, userAuthDomain.GetEmail(), userAuthDomain.GetName(), userAuthDomain.GetEncryptedPassword(), userAuthDomain.GetSalt(), false, timeStamp, timeStamp)
+	result, err := db.ExecContext(ctx, query, userAuthDomain.GetEmail(), userAuthDomain.GetName(), userAuthDomain.GetEncryptedPassword(), userAuthDomain.GetSalt(), false)
 	if err != nil {
 		logger.Error("Error trying insert user", err, zap.String("journey", "SignUp Repository"))
 		if strings.Contains(err.Error(), "Duplicate entry") {

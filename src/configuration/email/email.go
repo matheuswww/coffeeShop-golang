@@ -1,9 +1,11 @@
 package email
 
 import (
-	"errors"
+	"log"
+	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"net/mail"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -40,15 +42,14 @@ func (e *email) SendEmail(id int64, to []mail.Address, subject, body string) err
 }
 
 func (e *email) configConn() error {
-	mode := os.Getenv("MODE")
-	if mode == "PROD" {
-		return nil
-	} else if mode == "DEV" {
-		e.host = "172.17.0.1"
-		e.name = ""
-		e.password = ""
-		e.port = 25
-		return nil
+	port,err := strconv.Atoi(os.Getenv("MYSQL_PORT"))
+	if err != nil {
+		logger.Error("Error loading email", err)
+		log.Fatal("invalid port")
 	}
-	return errors.New("invalid mode")
+	e.host = os.Getenv("EMAIL_HOST")
+	e.name = os.Getenv("EMAIL_NAME")
+	e.password = os.Getenv("EMAIL_PASSWORD")
+	e.port = port
+	return nil
 }

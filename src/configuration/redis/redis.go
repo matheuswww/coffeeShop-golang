@@ -2,7 +2,6 @@ package redisClient
 
 import (
 	"context"
-	"errors"
 	"os"
 	"time"
 
@@ -29,14 +28,8 @@ func (m *redisClient) NewRedisConnection() (*redis.Client, error) {
 }
 
 func (m *redisClient) loadConfigs() error {
-	mode := os.Getenv("MODE")
-	if mode == "PROD" {
-		return nil
-	} else if mode == "DEV" {
-		m.host = "localhost:6379"
-		m.password = ""
-		m.DB = 0
-		return nil
-	}
-	return errors.New("invalid mod")
+	m.host = os.Getenv("REDIS_HOST")
+	m.password = os.Getenv("REDIS_PASSWORD")
+	m.DB = 0
+	return nil
 }

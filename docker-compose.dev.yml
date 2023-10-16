@@ -1,17 +1,21 @@
 version: "1"
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:latest
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: senha
       MYSQL_DATABASE: coffeeShop
+      MYSQL_USER: mysql
       MYSQL_PASSWORD: senha
+
+      MYSQL_ALLOW_EMPTY_PASSWORD:
     ports:
       - "3306:3306"
     volumes:
       - /var/lib/docker/volumes/mysql_dev:/var/lib/mysql_dev
-    restart: always
+      - ./mysql.conf/my.cnf:/etc/my.cnf
+      - ./mysql.conf/conf.d:/etc/mysql/conf.d/conf.d
     healthcheck:
         test: ["CMD", "curl", "-f", "http://mysql:3306"]
         interval: 30s

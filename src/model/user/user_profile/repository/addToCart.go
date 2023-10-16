@@ -4,15 +4,13 @@ import (
 	"context"
 	"matheuswww/coffeeShop-golang/src/configuration/logger"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
-	product_model "matheuswww/coffeeShop-golang/src/model/product"
-	user_profile_model "matheuswww/coffeeShop-golang/src/model/user/user_profile"
 	"time"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
-func (ur userProfileRepository) AddToCart(userProfileDomainSevice user_profile_model.UserProfileDomainInterface, productDomain product_model.ProductDomainInterface) *rest_err.RestErr {
+func (ur userProfileRepository) AddToCart(userId string,productId string,quantity int) *rest_err.RestErr {
 	logger.Info("Init AddToCart Repository", zap.String("journey", "AddToCart Repository"))
 	db := ur.database
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
@@ -23,8 +21,8 @@ func (ur userProfileRepository) AddToCart(userProfileDomainSevice user_profile_m
 		return rest_err.NewInternalServerError("server error")
 	}
 	uuidString := uuid.String()
-	query := "INSERT INTO cart (cart_id,user_id,product_id,product_name,quantity,price) VALUES(?, ?, ?, ?, ?, ?)"
-	_, err = db.ExecContext(ctx, query, uuidString, userProfileDomainSevice.GetId(), productDomain.GetId(), productDomain.GetName(), productDomain.GetStock(), productDomain.GetPrice())
+	query := "INSERT INTO cart (cart_id,user_id,product_id,quantity) VALUES(?, ?, ?, ?)"
+	_, err = db.ExecContext(ctx, query, uuidString,userId,productId,quantity)
 	if err != nil {
 		logger.Error("Error trying insert cart", err, zap.String("journey", "AddToCart Repository"))
 		return rest_err.NewInternalServerError("server error")

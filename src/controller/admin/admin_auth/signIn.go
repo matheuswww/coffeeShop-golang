@@ -30,6 +30,6 @@ func (ac *adminAuthController) SignIn(c *gin.Context) {
 		c.JSON(err.Code, err)
 		return
 	}
-	sessionCookie.SendCoockie(c, int64(domain.GetId()), domain.GetEmail(), "admin")
+	sessionCookie.SendCoockie(c, domain.GetId(), domain.GetEmail(), "admin")
 	c.Status(200)
 }

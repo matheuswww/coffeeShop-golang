@@ -1,11 +1,11 @@
 package admin_auth_model
 
 type AdminAuthDomainInterface interface {
-	GetId() int
+	GetId() string
 	GetEmail() string
 	GetPassword() string
 	GetEncryptedPassword() []byte
-	SetId(id int)
+	SetId(id string)
 	SetEncryptedPassword(encryptedPassword []byte)
 	GetSalt() []byte
 	SetSalt(salt []byte)

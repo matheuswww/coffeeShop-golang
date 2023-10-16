@@ -18,5 +18,5 @@ type adminAuthRepository struct {
 
 type AdminAuthRepository interface {
 	SignIn(admin admin_auth_model.AdminAuthDomainInterface) *rest_err.RestErr
-	SignUp(adminDomain admin_auth_model.AdminAuthDomainInterface) *rest_err.RestErr 
+	CreateAdmin(adminDomain admin_auth_model.AdminAuthDomainInterface) *rest_err.RestErr 
 }

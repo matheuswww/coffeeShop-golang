@@ -51,7 +51,7 @@ func (ur *userAuthRepository) SendAuthEmail(userDomain user_auth_model.UserAuthD
 	return nil
 }
 
-func verifyAuthEmail(database *sql.DB, id int64) (bool, error) {
+func verifyAuthEmail(database *sql.DB, id string) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), (time.Second * 5))
 	defer cancel()
 	query := "SELECT authenticated FROM users WHERE id = ?"

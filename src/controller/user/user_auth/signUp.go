@@ -7,8 +7,6 @@ import (
 	sessionCookie "matheuswww/coffeeShop-golang/src/controller/routes/cookies"
 	user_auth_model "matheuswww/coffeeShop-golang/src/model/user/user_auth"
 	"net/http"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -38,6 +36,6 @@ func (uc *userAuthControllerInterface) SignUp(c *gin.Context) {
 		return
 	}
 	sessionCookie.SendCoockie(c, domain.GetId(), domain.GetEmail(), domain.GetName())
-	logger.Info("User created succesfully", zap.String("userId", strconv.FormatInt(domain.GetId(), 10)), zap.String("journey", "SignUp Controller"))
+	logger.Info("User created succesfully", zap.String("userId",domain.GetId()), zap.String("journey", "SignUp Controller"))
 	c.Status(http.StatusCreated)
 }

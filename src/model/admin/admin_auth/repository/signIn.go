@@ -25,7 +25,7 @@ func (ar *adminAuthRepository) SignIn(adminDomain admin_auth_model.AdminAuthDoma
 	}
 	defer result.Close()
 	var encryptedPassword, salt []byte
-	var id int
+	var id string
 	if result.Next() {
 		if err = result.Scan(&id, &encryptedPassword, &salt); err != nil {
 			logger.Error("Error scanning result", err, zap.String("journey", "SignIn Repository"))

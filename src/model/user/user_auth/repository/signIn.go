@@ -25,7 +25,7 @@ func (ur *userAuthRepository) SignIn(userDomain user_auth_model.UserAuthDomainIn
 	}
 	defer result.Close()
 	var encryptedPassword, salt []byte
-	var id int64
+	var id string
 	var name string
 	if result.Next() {
 		if err = result.Scan(&id, &encryptedPassword, &salt, &name); err != nil {

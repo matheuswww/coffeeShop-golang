@@ -11,7 +11,7 @@ import (
 )
 
 type sessionCookie struct {
-	Id    int64
+	Id    string
 	Email string
 	Name  string
 }
@@ -29,7 +29,7 @@ func Store() cookie.Store {
 	return store
 }
 
-func SendCoockie(c *gin.Context, id int64, email string, name string) {
+func SendCoockie(c *gin.Context, id string, email string, name string) {
 	sessions := sessions.Default(c)
 	sessionCookie := sessionCookie{
 		Id:    id,
@@ -49,7 +49,7 @@ func GetCookieValues(c *gin.Context) (sessionCookie, error) {
 	name := sessions.Get("name")
 	if id != nil && email != nil && name != nil {
 		return sessionCookie{
-			Id:    id.(int64),
+			Id:    id.(string),
 			Email: email.(string),
 			Name:  name.(string),
 		}, nil

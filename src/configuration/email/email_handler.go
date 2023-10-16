@@ -12,10 +12,10 @@ type userHandler struct {
 }
 
 var (
-	userEmail = make(map[int64]*userHandler)
+	userEmail = make(map[string]*userHandler)
 )
 
-func (e *email) handler(id int64) (*userHandler, error) {
+func (e *email) handler(id string) (*userHandler, error) {
 	user, ok := userEmail[id]
 	if ok {
 		fmt.Println(user.UserError)

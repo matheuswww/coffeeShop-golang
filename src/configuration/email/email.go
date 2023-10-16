@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (e *email) SendEmail(id int64, to []mail.Address, subject, body string) error {
+func (e *email) SendEmail(id string, to []mail.Address, subject, body string) error {
 	err := e.configConn()
 	if err != nil {
 		return err

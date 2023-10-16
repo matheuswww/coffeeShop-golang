@@ -3,8 +3,6 @@ package user_profile_repository
 import (
 	"database/sql"
 	"matheuswww/coffeeShop-golang/src/configuration/rest_err"
-	product_model "matheuswww/coffeeShop-golang/src/model/product"
-	user_profile_model "matheuswww/coffeeShop-golang/src/model/user/user_profile"
 )
 
 func NewUserProfileRepository(database *sql.DB) UserProfileRepository {
@@ -18,5 +16,5 @@ type userProfileRepository struct {
 }
 
 type UserProfileRepository interface {
-	AddToCart(userProfileDomainSevice user_profile_model.UserProfileDomainInterface, productDomain product_model.ProductDomainInterface) *rest_err.RestErr
+	AddToCart(userId string, productId string,quantity int) *rest_err.RestErr
 }

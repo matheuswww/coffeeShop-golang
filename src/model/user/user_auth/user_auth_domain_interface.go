@@ -1,14 +1,14 @@
 package user_auth_model
 
 type UserAuthDomainInterface interface {
-	GetId() int64
+	GetId() string
 	GetEmail() string
 	GetName() string
 	GetPassword() string
 	GetEncryptedPassword() []byte
 	GetSalt() []byte
 
-	SetId(int64)
+	SetId(string)
 	SetPassword(string)
 	SetEncryptedPassword([]byte)
 	SetSalt([]byte)
@@ -30,7 +30,7 @@ func NewUserSignInDomain(email, password string) *userAuthDomain {
 	}
 }
 
-func NewUserDomainSendAuthEmail(id int64, email string, name string) *userAuthDomain {
+func NewUserDomainSendAuthEmail(id string, email string, name string) *userAuthDomain {
 	return &userAuthDomain{
 		id:    id,
 		email: email,
@@ -38,7 +38,7 @@ func NewUserDomainSendAuthEmail(id int64, email string, name string) *userAuthDo
 	}
 }
 
-func NewUserDomainAuthEmail(id int64) *userAuthDomain {
+func NewUserDomainAuthEmail(id string) *userAuthDomain {
 	return &userAuthDomain{
 		id: id,
 	}

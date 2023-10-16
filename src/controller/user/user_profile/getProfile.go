@@ -20,7 +20,7 @@ func (uc *userProfileController) GetProfile(c *gin.Context) {
 		})
 	}
 	c.JSON(200, struct {
-		Id    int64  `json:"id"`
+		Id    string  `json:"id"`
 		Email string `json:"email"`
 		Name  string `json:"name"`
 	}{
